@@ -190,8 +190,8 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
       metadataBase: new URL(baseUrl),
       title: {
-        default: settings.metaTitle || settings.brandName || "Care Mom",
-        template: `%s | ${settings.brandName || "Care Mom"}`,
+        default: settings.metaTitle || settings.brandName || "Rimon Ayurbedic",
+        template: `%s | ${settings.brandName || "Rimon Ayurbedic"}`,
       },
       description: settings.metaDescription || settings.brandName || "Your ultimate destination for quality products.",
       manifest: '/manifest.json',
@@ -203,21 +203,21 @@ export async function generateMetadata(): Promise<Metadata> {
       appleWebApp: {
         capable: true,
         statusBarStyle: 'default',
-        title: settings.brandName || "Care Mom",
+        title: settings.brandName || "Rimon Ayurbedic",
       },
       formatDetection: {
         telephone: false,
       },
       openGraph: {
-        title: settings.metaTitle || settings.brandName || "Care Mom",
+        title: settings.metaTitle || settings.brandName || "Rimon Ayurbedic",
         description: settings.metaDescription || settings.brandName || "Your ultimate destination for quality products.",
         url: baseUrl,
-        siteName: settings.brandName || "Care Mom",
+        siteName: settings.brandName || "Rimon Ayurbedic",
         type: 'website',
       },
       twitter: {
         card: 'summary_large_image',
-        title: settings.metaTitle || settings.brandName || "Care Mom",
+        title: settings.metaTitle || settings.brandName || "Rimon Ayurbedic",
         description: settings.metaDescription || settings.brandName || "Your ultimate destination for quality products.",
       },
       verification: {
@@ -234,7 +234,7 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   } catch (error) {
     return {
-      title: "Care Mom",
+      title: "Rimon Ayurbedic",
       description: "Your ultimate destination for quality products.",
     };
   }

@@ -1,8 +1,8 @@
-# CareMom Product Image AI Prompts (25 Products)
+# RimonAyurbedic Product Image AI Prompts (25 Products)
 
 This document contains **25 professional product image prompts** (5 products under each of the 5 categories). 
 
-Please generate these images in **1:1 square aspect ratio** (e.g. using Midjourney, DALL-E 3, or FLUX). Convert them to **`.webp`** format, and place them inside the **`D:\project\CareMom\public\assets\images\products`** folder.
+Please generate these images in **1:1 square aspect ratio** (e.g. using Midjourney, DALL-E 3, or FLUX). Convert them to **`.webp`** format, and place them inside the **`D:\project\RimonAyurbedic\public\assets\images\products`** folder.
 
 ---
 

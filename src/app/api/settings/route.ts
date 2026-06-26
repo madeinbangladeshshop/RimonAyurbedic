@@ -33,9 +33,9 @@ export async function GET() {
     const settings = await GlobalSettings.findOne().sort({ updatedAt: -1 });
     if (!settings) {
       return NextResponse.json({
-        brandName: process.env.NEXT_PUBLIC_STORE_NAME || "Care Mom",
+        brandName: process.env.NEXT_PUBLIC_STORE_NAME || "Rimon Ayurbedic",
         contact: {
-          email: "support@caremombd.com",
+          email: "support@rimonayurbedic.com",
           phone: "+8801234567890",
           address: "Dhaka, Bangladesh"
         },
@@ -48,8 +48,8 @@ export async function GET() {
           tiktok: '',
           whatsapp: ''
         },
-        marqueeText: "Welcome to Care Mom!",
-        metaTitle: process.env.NEXT_PUBLIC_STORE_NAME || "Care Mom",
+        marqueeText: "Welcome to Rimon Ayurbedic!",
+        metaTitle: process.env.NEXT_PUBLIC_STORE_NAME || "Rimon Ayurbedic",
         metaDescription: "The most popular online shop in Bangladesh.",
         logoUrl: "/logo.webp",
         freeDeliveryThreshold: 0,

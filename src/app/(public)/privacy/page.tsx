@@ -5,8 +5,8 @@ import { Separator } from '@/components/ui/separator';
 import { ShieldCheck, Info, Share2, Lock, Eye, Bell } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Care Mom',
-  description: 'Learn how Care Mom collects, uses, and protects your personal information.',
+  title: 'Privacy Policy | Rimon Ayurbedic',
+  description: 'Learn how Rimon Ayurbedic collects, uses, and protects your personal information.',
 };
 
 async function getSettings() {
@@ -15,9 +15,9 @@ async function getSettings() {
     const settings = await GlobalSettings.findOne().lean();
     if (!settings) {
       return {
-        brandName: "Care Mom",
+        brandName: "Rimon Ayurbedic",
         contact: {
-          email: "support@caremombd.com"
+          email: "support@rimonayurbedic.com"
         }
       };
     }
@@ -25,9 +25,9 @@ async function getSettings() {
   } catch (error) {
     console.error('Error fetching settings for privacy page:', error);
     return {
-      brandName: "Care Mom",
+      brandName: "Rimon Ayurbedic",
       contact: {
-        email: "support@caremombd.com"
+        email: "support@rimonayurbedic.com"
       }
     };
   }
@@ -36,7 +36,7 @@ async function getSettings() {
 export default async function PrivacyPage() {
   const settings = await getSettings();
   const brandName = settings.brandName || "RPL Market";
-  const contactEmail = settings.contact?.email || "support@caremombd.com";
+  const contactEmail = settings.contact?.email || "support@rimonayurbedic.com";
   const lastUpdated = "April 04, 2026";
 
   return (

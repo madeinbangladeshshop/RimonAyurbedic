@@ -15,7 +15,7 @@ if (fs.existsSync(envPath)) {
 }
 
 if (!mongodbUri) {
-  mongodbUri = 'mongodb+srv://CareMom:xI2QuBaFZsYQ5vRD@cluster0.e5n1hnl.mongodb.net/CareMom';
+  mongodbUri = 'mongodb+srv://RimonAyurbedic:xI2QuBaFZsYQ5vRD@cluster0.e5n1hnl.mongodb.net/RimonAyurbedic';
 }
 
 console.log('Connecting to MongoDB...');
@@ -52,7 +52,7 @@ const faqs = [
     isActive: true,
   },
   {
-    question: 'How do I claim the warranty for home appliances purchased from CareMom?',
+    question: 'How do I claim the warranty for home appliances purchased from RimonAyurbedic?',
     answer: 'All smart home appliances come with their official brand warranty cards inside the box. You can claim the warranty directly at any authorized brand service center, or you can contact our support team and we will assist you with the process.',
     order: 4,
     isActive: true,
@@ -71,7 +71,7 @@ async function seed() {
       await mongoose.connect(mongodbUri);
     } catch (connErr) {
       console.log('SRV connection failed, trying direct connection fallback...');
-      const directUri = 'mongodb://CareMom:xI2QuBaFZsYQ5vRD@ac-jrowhop-shard-00-00.e5n1hnl.mongodb.net:27017,ac-jrowhop-shard-00-01.e5n1hnl.mongodb.net:27017,ac-jrowhop-shard-00-02.e5n1hnl.mongodb.net:27017/CareMom?ssl=true&authSource=admin';
+      const directUri = 'mongodb://RimonAyurbedic:xI2QuBaFZsYQ5vRD@ac-jrowhop-shard-00-00.e5n1hnl.mongodb.net:27017,ac-jrowhop-shard-00-01.e5n1hnl.mongodb.net:27017,ac-jrowhop-shard-00-02.e5n1hnl.mongodb.net:27017/RimonAyurbedic?ssl=true&authSource=admin';
       await mongoose.connect(directUri);
     }
     console.log('Connected to MongoDB successfully.');

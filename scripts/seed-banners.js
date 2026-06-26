@@ -16,7 +16,7 @@ if (fs.existsSync(envPath)) {
 
 if (!mongodbUri) {
   // Fallback if env file doesn't parse correctly
-  mongodbUri = 'mongodb+srv://caremombd:S4Epscw0SOkd5ZtG@cluster0.e5n1hnl.mongodb.net/caremombd';
+  mongodbUri = 'mongodb+srv://rimonayurbedic:S4Epscw0SOkd5ZtG@cluster0.e5n1hnl.mongodb.net/rimonayurbedic';
 }
 
 console.log('Connecting to MongoDB...');
@@ -102,7 +102,7 @@ async function seed() {
       await mongoose.connect(mongodbUri);
     } catch (connErr) {
       console.log('SRV connection failed, trying direct connection fallback...');
-      const directUri = 'mongodb://CareMom:xI2QuBaFZsYQ5vRD@ac-jrowhop-shard-00-00.e5n1hnl.mongodb.net:27017,ac-jrowhop-shard-00-01.e5n1hnl.mongodb.net:27017,ac-jrowhop-shard-00-02.e5n1hnl.mongodb.net:27017/CareMom?ssl=true&authSource=admin';
+      const directUri = 'mongodb://RimonAyurbedic:xI2QuBaFZsYQ5vRD@ac-jrowhop-shard-00-00.e5n1hnl.mongodb.net:27017,ac-jrowhop-shard-00-01.e5n1hnl.mongodb.net:27017,ac-jrowhop-shard-00-02.e5n1hnl.mongodb.net:27017/RimonAyurbedic?ssl=true&authSource=admin';
       await mongoose.connect(directUri);
     }
     console.log('Connected to MongoDB successfully.');
