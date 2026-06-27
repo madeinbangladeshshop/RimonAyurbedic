@@ -120,19 +120,21 @@ export default function NavbarV5() {
                )}
             </Link>
 
-            <CartDrawer>
-              <div 
-                 className="relative group h-14 w-14 rounded-[2rem] bg-transparent text-foreground flex items-center justify-center hover:scale-110 hover:text-primary transition-all cursor-pointer"
-                 aria-label={`Shopping Cart (${cartItemsCount})`}
-              >
-                 <ShoppingBag className="h-6 w-6" />
-                 {cartItemsCount > 0 && (
-                   <span className="absolute -top-1 -right-1 h-6 w-6 bg-white text-black text-[10px] font-black rounded-full flex items-center justify-center shadow-lg border-2 border-primary animate-in zoom-in">
-                     {cartItemsCount}
-                   </span>
-                 )}
-              </div>
-            </CartDrawer>
+            <div className="hidden md:block">
+              <CartDrawer>
+                <div 
+                   className="relative group h-14 w-14 rounded-[2rem] bg-transparent text-foreground flex items-center justify-center hover:scale-110 hover:text-primary transition-all cursor-pointer"
+                   aria-label={`Shopping Cart (${cartItemsCount})`}
+                >
+                   <ShoppingBag className="h-6 w-6" />
+                   {cartItemsCount > 0 && (
+                     <span className="absolute -top-1 -right-1 h-6 w-6 bg-white text-black text-[10px] font-black rounded-full flex items-center justify-center shadow-lg border-2 border-primary animate-in zoom-in">
+                       {cartItemsCount}
+                     </span>
+                   )}
+                </div>
+              </CartDrawer>
+            </div>
 
             <div className="h-10 w-[1px] bg-black/5 mx-2 hidden md:block" />
 

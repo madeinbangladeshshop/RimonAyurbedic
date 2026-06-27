@@ -241,24 +241,26 @@ export default function NavbarV4() {
             </Link>
           )}
 
-          <CartDrawer>
-            <div className="relative group flex items-center gap-3 cursor-pointer hover:scale-110 transition-all">
-              <div className="relative">
-                <div className="h-11 w-11 rounded-xl bg-transparent flex items-center justify-center transition-all group-hover:text-primary">
-                  <ShoppingCart className="h-5 w-5" />
+          <div className="hidden md:block">
+            <CartDrawer>
+              <div className="relative group flex items-center gap-3 cursor-pointer hover:scale-110 transition-all">
+                <div className="relative">
+                  <div className="h-11 w-11 rounded-xl bg-transparent flex items-center justify-center transition-all group-hover:text-primary">
+                    <ShoppingCart className="h-5 w-5" />
+                  </div>
+                  {cartItemsCount > 0 && (
+                    <span className="absolute -top-2 -right-2 h-5 w-5 bg-white text-black text-[9px] font-black rounded-full flex items-center justify-center border-2 border-[#0f1111] animate-bounce">
+                      {cartItemsCount}
+                    </span>
+                  )}
                 </div>
-                {cartItemsCount > 0 && (
-                  <span className="absolute -top-2 -right-2 h-5 w-5 bg-white text-black text-[9px] font-black rounded-full flex items-center justify-center border-2 border-[#0f1111] animate-bounce">
-                    {cartItemsCount}
-                  </span>
-                )}
+                <div className="hidden md:flex flex-col">
+                   <span className="text-[9px] opacity-40 uppercase font-black tracking-widest leading-none mb-1">Your Bag</span>
+                   <span className="text-xs font-bold leading-none">৳{totalAmount.toLocaleString()}</span>
+                </div>
               </div>
-              <div className="hidden md:flex flex-col">
-                 <span className="text-[9px] opacity-40 uppercase font-black tracking-widest leading-none mb-1">Your Bag</span>
-                 <span className="text-xs font-bold leading-none">৳{totalAmount.toLocaleString()}</span>
-              </div>
-            </div>
-          </CartDrawer>
+            </CartDrawer>
+          </div>
         </div>
       </div>
 

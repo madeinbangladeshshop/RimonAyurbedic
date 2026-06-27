@@ -220,19 +220,21 @@ export default function NavbarV3() {
               </Link>
             )}
 
-            <CartDrawer>
-              <div className="flex items-center gap-3 group cursor-pointer hover:scale-110 transition-all">
-                <div className="relative">
-                  <ShoppingBag className="h-5 w-5 stroke-[1.5] group-hover:text-primary transition-all" />
-                  {cartItemsCount > 0 && (
-                    <span className="absolute -top-2 -right-2 h-4 w-4 bg-black text-white text-[8px] font-black rounded-full flex items-center justify-center">
-                      {cartItemsCount}
-                    </span>
-                  )}
+            <div className="hidden md:block">
+              <CartDrawer>
+                <div className="flex items-center gap-3 group cursor-pointer hover:scale-110 transition-all">
+                  <div className="relative">
+                    <ShoppingBag className="h-5 w-5 stroke-[1.5] group-hover:text-primary transition-all" />
+                    {cartItemsCount > 0 && (
+                      <span className="absolute -top-2 -right-2 h-4 w-4 bg-black text-white text-[8px] font-black rounded-full flex items-center justify-center">
+                        {cartItemsCount}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] hidden md:block border-b-2 border-transparent group-hover:border-primary transition-all">Atelier</span>
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] hidden md:block border-b-2 border-transparent group-hover:border-primary transition-all">Atelier</span>
-              </div>
-            </CartDrawer>
+              </CartDrawer>
+            </div>
           </div>
 
         </div>

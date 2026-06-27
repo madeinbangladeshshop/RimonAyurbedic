@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import FAQ from '@/models/FAQ';
 import { auth } from '@/auth';
+import { revalidateTag } from 'next/cache';
 
 export async function GET() {
   try {
@@ -45,6 +46,10 @@ export async function POST(req: NextRequest) {
     await connectToDatabase();
     
     const faq = await FAQ.create(sanitizedData);
+    
+    // Revalidate Next.js Cache
+    revalidateTag('faqs', 'max');
+    
     return NextResponse.json(faq, { status: 201 });
   } catch (error) {
     console.error('Create FAQ Error:', error);

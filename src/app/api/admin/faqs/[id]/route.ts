@@ -3,6 +3,7 @@ import connectToDatabase from '@/lib/db';
 import FAQ from '@/models/FAQ';
 import { auth } from '@/auth';
 import mongoose from 'mongoose';
+import { revalidateTag } from 'next/cache';
 
 export async function PATCH(
   req: NextRequest,
@@ -46,6 +47,9 @@ export async function PATCH(
       return NextResponse.json({ message: 'FAQ not found' }, { status: 404 });
     }
 
+    // Revalidate Next.js Cache
+    revalidateTag('faqs', 'max');
+
     return NextResponse.json(faq);
   } catch (error) {
     console.error('Update FAQ Error:', error);
@@ -75,6 +79,9 @@ export async function DELETE(
     if (!faq) {
       return NextResponse.json({ message: 'FAQ not found' }, { status: 404 });
     }
+
+    // Revalidate Next.js Cache
+    revalidateTag('faqs', 'max');
 
     return NextResponse.json({ message: 'FAQ deleted successfully' });
   } catch (error) {

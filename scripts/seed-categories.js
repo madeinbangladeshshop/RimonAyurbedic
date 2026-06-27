@@ -36,33 +36,33 @@ const Category = mongoose.models.Category || mongoose.model('Category', Category
 
 const categories = [
   {
-    name: 'Motherhood & Maternity',
-    slug: 'motherhood-maternity',
-    image: '/assets/images/cagetory/Motherhood & Maternity.webp',
+    name: 'Ayurvedic Medicine & Remedies',
+    slug: 'ayurvedic-medicine-remedies',
+    image: '/assets/images/cagetory/Ayurvedic Medicine & Remedies.webp',
     isActive: true,
   },
   {
-    name: 'Baby Care & Essentials',
-    slug: 'baby-care-essentials',
-    image: '/assets/images/cagetory/Baby Care & Essentials.webp',
+    name: 'Herbal Hair & Scalp Care',
+    slug: 'herbal-hair-scalp-care',
+    image: '/assets/images/cagetory/Herbal Hair & Scalp Care.webp',
     isActive: true,
   },
   {
-    name: 'Baby Feeding & Nutrition',
-    slug: 'baby-feeding-nutrition',
-    image: '/assets/images/cagetory/Baby Feeding & Nutrition.webp',
+    name: 'Organic Skin & Beauty',
+    slug: 'organic-skin-beauty',
+    image: '/assets/images/cagetory/Organic Skin & Beauty.webp',
     isActive: true,
   },
   {
-    name: 'Smart Kitchen Appliances',
-    slug: 'kitchen-appliances',
-    image: '/assets/images/cagetory/Smart Kitchen Appliances.webp',
+    name: 'Wellness & Dietary Supplements',
+    slug: 'wellness-dietary-supplements',
+    image: '/assets/images/cagetory/Wellness & Dietary Supplements.webp',
     isActive: true,
   },
   {
-    name: 'Home Comfort & Cleaning',
-    slug: 'home-comfort-cleaning',
-    image: '/assets/images/cagetory/Home Comfort & Cleaning.webp',
+    name: 'Organic Herbs & Teas',
+    slug: 'organic-herbs-teas',
+    image: '/assets/images/cagetory/Organic Herbs & Teas.webp',
     isActive: true,
   }
 ];

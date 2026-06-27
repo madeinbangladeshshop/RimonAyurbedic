@@ -34,32 +34,32 @@ const FAQ = mongoose.models.FAQ || mongoose.model('FAQ', FAQSchema);
 
 const faqs = [
   {
-    question: 'What is your return policy for baby care products and appliances?',
-    answer: 'We offer a 7-day easy return policy for all unused products in their original packaging. For home appliances, we also provide official brand warranty claims. Please note that for hygiene reasons, personal baby care items like feeding nipples or breast pumps cannot be returned once opened.',
+    question: 'Are your Ayurvedic medicines 100% natural and safe?',
+    answer: 'Yes, all our Ayurvedic products and herbal remedies are sourced from certified manufacturers, prepared using 100% natural ingredients, and free from harmful chemicals. However, we recommend consulting a physician for specific health conditions.',
     order: 1,
     isActive: true,
   },
   {
-    question: 'Are the baby products you sell safe and certified?',
-    answer: 'Yes, absolutely. All our baby products, feeding gear, and skincare items are sourced directly from certified manufacturers and are 100% BPA-free, non-toxic, and dermatologically tested for sensitive infant skin.',
+    question: 'Do I need a prescription to buy medicines from Rimon Ayurbedic?',
+    answer: 'Most of our natural supplements, general wellness tonics, and herbal products do not require a prescription. However, for specialized classical Ayurvedic formulations, we suggest consulting a registered Ayurvedic practitioner.',
     order: 2,
     isActive: true,
   },
   {
-    question: 'Do you provide home delivery all over Bangladesh?',
-    answer: 'Yes, we deliver nationwide. Inside Dhaka, delivery takes 24 to 48 hours, and outside Dhaka, it takes 3 to 5 business days. We offer both Cash on Delivery (COD) and secure online payment options.',
+    question: 'How should I store the herbal products and liquid tonics?',
+    answer: 'We recommend storing all Ayurvedic medicines, tablets, and liquid arishtas in a cool, dry place away from direct sunlight. Always keep the container tightly closed after use.',
     order: 3,
     isActive: true,
   },
   {
-    question: 'How do I claim the warranty for home appliances purchased from RimonAyurbedic?',
-    answer: 'All smart home appliances come with their official brand warranty cards inside the box. You can claim the warranty directly at any authorized brand service center, or you can contact our support team and we will assist you with the process.',
+    question: 'Do you deliver all over Bangladesh, and what are the charges?',
+    answer: 'Yes, we deliver nationwide. Inside Dhaka, delivery takes 24 to 48 hours, and outside Dhaka, it takes 3 to 5 business days. Delivery charges are ৳60 inside Dhaka and ৳120 outside Dhaka, with free delivery on orders above ৳1000.',
     order: 4,
     isActive: true,
   },
   {
-    question: 'Can I track my order once it is shipped?',
-    answer: 'Yes, once your order is dispatched, you will receive an SMS containing a tracking link and courier details. You can also monitor your order status directly from the "My Orders" section of your dashboard.',
+    question: 'What is your return policy for Ayurvedic medicines?',
+    answer: 'We offer a 7-day easy return policy for all sealed and unused products in their original packaging. For safety and hygiene reasons, opened or used medicines and liquid tonics cannot be returned.',
     order: 5,
     isActive: true,
   }

@@ -97,15 +97,15 @@ export default function Navbar() {
     if (status === 'authenticated') {
       fetch('/api/user/profile', { signal: controller.signal })
         .then(res => {
-          if (!res.ok) throw new Error('Failed to fetch profile');
+          if (!res.ok) return null;
           return res.json();
         })
         .then(data => {
-          if (isMounted) setProfile(data);
+          if (isMounted && data) setProfile(data);
         })
         .catch(err => {
           if (err.name !== 'AbortError') {
-            console.error('Failed to fetch profile', err);
+            console.warn('Could not load user profile data');
           }
         });
     } else {
@@ -286,7 +286,7 @@ export default function Navbar() {
 
             {/* Logo (Centered in desktop, Left-ish in mobile) */}
             <div className="flex items-center justify-center flex-1 md:flex-initial">
-              <Logo textClassName="text-xl md:text-3xl" />
+              <Logo textClassName="text-lg md:text-2xl whitespace-nowrap" />
             </div>
 
             {/* Icons/Action Row (Right) */}
@@ -327,123 +327,127 @@ export default function Navbar() {
               </Link>
 
               {/* Cart */}
-              <CartDrawer>
-                <div
-                  className="flex items-center gap-2 group cursor-pointer hover:text-primary px-2 py-1.5 rounded-full transition-all hover:scale-110 active:scale-95"
-                  aria-label="Shopping Cart"
-                  role="button"
-                >
-                  <div className="relative">
-                    <ShoppingCart className="h-5 w-5 stroke-[1.5]" />
-                    {cartCount > 0 && (
-                      <span className="absolute -top-2 -right-2 h-4 w-4 bg-primary text-white text-[8px] font-black rounded-full flex items-center justify-center animate-in zoom-in">
-                        {cartCount}
-                      </span>
-                    )}
+              <div className="hidden md:block">
+                <CartDrawer>
+                  <div
+                    className="flex items-center gap-2 group cursor-pointer hover:text-primary px-2 py-1.5 rounded-full transition-all hover:scale-110 active:scale-95"
+                    aria-label="Shopping Cart"
+                    role="button"
+                  >
+                    <div className="relative">
+                      <ShoppingCart className="h-5 w-5 stroke-[1.5]" />
+                      {cartCount > 0 && (
+                        <span className="absolute -top-2 -right-2 h-4 w-4 bg-primary text-white text-[8px] font-black rounded-full flex items-center justify-center animate-in zoom-in">
+                          {cartCount}
+                        </span>
+                      )}
+                    </div>
+                    <div className="hidden lg:flex flex-col text-left">
+                      <span className="text-[10px] font-bold leading-none tracking-tighter">৳{totalAmount.toLocaleString()}</span>
+                    </div>
                   </div>
-                  <div className="hidden lg:flex flex-col text-left">
-                    <span className="text-[10px] font-bold leading-none tracking-tighter">৳{totalAmount.toLocaleString()}</span>
-                  </div>
-                </div>
-              </CartDrawer>
+                </CartDrawer>
+              </div>
 
               {/* User Account (Right end) */}
-              {status === 'authenticated' && session?.user ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      className="flex items-center gap-2 px-2 py-1.5 rounded-xl transition-all cursor-pointer outline-none group hover:scale-110"
-                      aria-label="Account menu"
-                    >
-                      <div className="h-8 w-8 rounded-full border-2 border-primary/20 overflow-hidden group-hover:border-primary transition-all">
-                        <img
-                          src={session.user?.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(session.user?.name || 'U')}`}
-                          alt={session.user?.name || 'User'}
-                          className="h-full w-full object-cover"
-                        />
-                      </div>
-                      <span className="hidden sm:block text-xs font-bold text-gray-700 group-hover:text-primary transition-colors">
-                        {session.user?.name?.split(' ')[0]}
-                      </span>
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56 mt-2">
-                    <DropdownMenuGroup>
-                      <DropdownMenuLabel className="font-serif">
-                        <div className="flex flex-col">
-                          <span>{session.user?.name}</span>
-                          <span className="text-xs font-normal text-muted-foreground truncate">{session.user?.email}</span>
-                          {profile && (
-                            <div className="mt-1.5 flex items-center gap-1.5 bg-primary/10 px-2 py-0.5 rounded-full w-fit border border-primary/20">
-                              <Package className="h-3 w-3 text-primary" />
-                              <span className="text-[10px] font-bold text-primary">৳{profile.walletBalance || 0} Tokens</span>
-                            </div>
-                          )}
+              <div className="hidden md:flex items-center">
+                {status === 'authenticated' && session?.user ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        className="flex items-center gap-2 px-2 py-1.5 rounded-xl transition-all cursor-pointer outline-none group hover:scale-110"
+                        aria-label="Account menu"
+                      >
+                        <div className="h-8 w-8 rounded-full border-2 border-primary/20 overflow-hidden group-hover:border-primary transition-all">
+                          <img
+                            src={session.user?.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(session.user?.name || 'U')}`}
+                            alt={session.user?.name || 'User'}
+                            className="h-full w-full object-cover"
+                          />
                         </div>
-                      </DropdownMenuLabel>
+                        <span className="hidden sm:block text-xs font-bold text-gray-700 group-hover:text-primary transition-colors">
+                          {session.user?.name?.split(' ')[0]}
+                        </span>
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56 mt-2">
+                      <DropdownMenuGroup>
+                        <DropdownMenuLabel className="font-serif">
+                          <div className="flex flex-col">
+                            <span>{session.user?.name}</span>
+                            <span className="text-xs font-normal text-muted-foreground truncate">{session.user?.email}</span>
+                            {profile && (
+                              <div className="mt-1.5 flex items-center gap-1.5 bg-primary/10 px-2 py-0.5 rounded-full w-fit border border-primary/20">
+                                <Package className="h-3 w-3 text-primary" />
+                                <span className="text-[10px] font-bold text-primary">৳{profile.walletBalance || 0} Tokens</span>
+                              </div>
+                            )}
+                          </div>
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+
+                        {/* Role Based Navigation */}
+                        {(session.user as any)?.role === 'super_admin' && (
+                          <>
+                            <DropdownMenuItem asChild>
+                              <Link href="/admin/dashboard" className="cursor-pointer">
+                                <LayoutDashboard className="mr-2 h-4 w-4" /> Admin Dashboard
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                              <Link href="/admin/system-design" className="cursor-pointer">
+                                <Settings className="mr-2 h-4 w-4" /> Infrastructure & Marketing
+                              </Link>
+                            </DropdownMenuItem>
+                          </>
+                        )}
+
+                        {(session.user as any)?.role === 'admin' && (
+                          <>
+                            <DropdownMenuItem asChild>
+                              <Link href="/admin/dashboard" className="cursor-pointer">
+                                <LayoutDashboard className="mr-2 h-4 w-4" /> Admin Dashboard
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                              <Link href="/admin/orders" className="cursor-pointer">
+                                <Truck className="mr-2 h-4 w-4" /> Manage Orders
+                              </Link>
+                            </DropdownMenuItem>
+                          </>
+                        )}
+
+                        {(session.user as any)?.role === 'user' && (
+                          <>
+                            <DropdownMenuItem asChild>
+                              <Link href="/dashboard" className="cursor-pointer">
+                                <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                              <Link href="/track-order" className="cursor-pointer">
+                                <Truck className="mr-2 h-4 w-4" /> Track Order
+                              </Link>
+                            </DropdownMenuItem>
+                          </>
+                        )}
+                      </DropdownMenuGroup>
                       <DropdownMenuSeparator />
-
-                      {/* Role Based Navigation */}
-                      {(session.user as any)?.role === 'super_admin' && (
-                        <>
-                          <DropdownMenuItem asChild>
-                            <Link href="/admin/dashboard" className="cursor-pointer">
-                              <LayoutDashboard className="mr-2 h-4 w-4" /> Admin Dashboard
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem asChild>
-                            <Link href="/admin/system-design" className="cursor-pointer">
-                              <Settings className="mr-2 h-4 w-4" /> Infrastructure & Marketing
-                            </Link>
-                          </DropdownMenuItem>
-                        </>
-                      )}
-
-                      {(session.user as any)?.role === 'admin' && (
-                        <>
-                          <DropdownMenuItem asChild>
-                            <Link href="/admin/dashboard" className="cursor-pointer">
-                              <LayoutDashboard className="mr-2 h-4 w-4" /> Admin Dashboard
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem asChild>
-                            <Link href="/admin/orders" className="cursor-pointer">
-                              <Truck className="mr-2 h-4 w-4" /> Manage Orders
-                            </Link>
-                          </DropdownMenuItem>
-                        </>
-                      )}
-
-                      {(session.user as any)?.role === 'user' && (
-                        <>
-                          <DropdownMenuItem asChild>
-                            <Link href="/dashboard" className="cursor-pointer">
-                              <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem asChild>
-                            <Link href="/track-order" className="cursor-pointer">
-                              <Truck className="mr-2 h-4 w-4" /> Track Order
-                            </Link>
-                          </DropdownMenuItem>
-                        </>
-                      )}
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => signOut({ callbackUrl: window.location.origin })} className="text-destructive cursor-pointer">
-                      <LogOut className="mr-2 h-4 w-4" /> Sign Out
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Link
-                  href="/login"
-                  className="h-10 w-10 flex items-center justify-center rounded-xl transition-all cursor-pointer hover:text-primary"
-                  aria-label="Log in"
-                >
-                  <User className="h-5 w-5" />
-                </Link>
-              )}
+                      <DropdownMenuItem onClick={() => signOut({ callbackUrl: window.location.origin })} className="text-destructive cursor-pointer">
+                        <LogOut className="mr-2 h-4 w-4" /> Sign Out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="h-10 w-10 flex items-center justify-center rounded-xl transition-all cursor-pointer hover:text-primary"
+                    aria-label="Log in"
+                  >
+                    <User className="h-5 w-5" />
+                  </Link>
+                )}
+              </div>
 
             </div>
           </div>

@@ -34,6 +34,11 @@ interface SettingsContextType {
     image: string;
     rating: number;
   }[];
+  contact?: {
+    email?: string;
+    phone?: string;
+    address?: string;
+  };
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
