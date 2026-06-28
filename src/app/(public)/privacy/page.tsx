@@ -17,7 +17,7 @@ async function getSettings() {
       return {
         brandName: "Rimon Ayurbedic",
         contact: {
-          email: "support@rimonayurbedic.com"
+          email: "support@rimonherbal.com"
         }
       };
     }
@@ -27,7 +27,7 @@ async function getSettings() {
     return {
       brandName: "Rimon Ayurbedic",
       contact: {
-        email: "support@rimonayurbedic.com"
+        email: "support@rimonherbal.com"
       }
     };
   }
@@ -36,7 +36,7 @@ async function getSettings() {
 export default async function PrivacyPage() {
   const settings = await getSettings();
   const brandName = settings.brandName || "RPL Market";
-  const contactEmail = settings.contact?.email || "support@rimonayurbedic.com";
+  const contactEmail = settings.contact?.email || "support@rimonherbal.com";
   const lastUpdated = "April 04, 2026";
 
   return (
@@ -63,7 +63,7 @@ export default async function PrivacyPage() {
       <section className="py-12 md:py-20">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="prose prose-slate dark:prose-invert max-w-none space-y-12">
-            
+
             {/* Introduction */}
             <div>
               <div className="flex items-center gap-3 mb-4">
@@ -158,8 +158,8 @@ export default async function PrivacyPage() {
               <p className="text-muted-foreground mb-6">
                 If you have any questions about this privacy policy or our privacy practices, please contact us.
               </p>
-              <a 
-                href={`mailto:${contactEmail}`} 
+              <a
+                href={`mailto:${contactEmail}`}
                 className="text-primary font-bold text-lg hover:underline transition-all"
               >
                 {contactEmail}

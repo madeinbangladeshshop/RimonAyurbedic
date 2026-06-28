@@ -297,12 +297,7 @@ export default function Navbar() {
                 <ModeToggle />
               </div>
 
-              {/* AI Chatbot - Only visible if API key is set */}
-              {settings?.aiConfig?.openRouterApiKey && (
-                <div className="hidden sm:block">
-                  <AIChatbot />
-                </div>
-              )}
+
 
               {/* Wishlist */}
               <Link

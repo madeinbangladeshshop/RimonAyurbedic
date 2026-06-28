@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { ChevronUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { AIChatbot } from "./AIChatbot";
 
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
   const [whatsappNumber, setWhatsappNumber] = useState<string | null>(null);
+  const [geminiApiKey, setGeminiApiKey] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -16,6 +18,7 @@ export function ScrollToTop() {
         if (res.ok) {
           const data = await res.json();
           setWhatsappNumber(data.socialLinks?.whatsapp || null);
+          setGeminiApiKey(data.aiConfig?.geminiApiKey || null);
         }
       } catch (err) {
         console.error('Error fetching settings:', err);
@@ -43,10 +46,17 @@ export function ScrollToTop() {
   };
 
   return (
-    <div className="fixed bottom-24 right-3 z-50 md:bottom-6 md:right-4 flex flex-col gap-3">
+    <div className="fixed bottom-24 right-3 z-50 md:bottom-6 md:right-4 flex flex-col gap-3 items-center">
+      <AnimatePresence mode="wait">
+        {geminiApiKey && (
+          <AIChatbot key="ai-chatbot-floating" />
+        )}
+      </AnimatePresence>
+
       <AnimatePresence mode="wait">
         {whatsappNumber && (
           <motion.div
+            key="whatsapp-floating"
             initial={{ opacity: 0, scale: 0.5, x: 20 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             whileHover={{ scale: 1.1 }}
@@ -73,6 +83,7 @@ export function ScrollToTop() {
       <AnimatePresence mode="wait">
         {isVisible && (
           <motion.div
+            key="scroll-top-floating"
             initial={{ opacity: 0, scale: 0.5, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.5, y: 30 }}

@@ -38,6 +38,7 @@ export interface IProduct extends Document {
   numReviews: number;
   views: number;
   totalSales: number;
+  embedding?: number[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -89,6 +90,7 @@ const ProductSchema: Schema<IProduct> = new Schema(
     numReviews: { type: Number, default: 0, min: [0, 'Number of reviews cannot be negative'] },
     views: { type: Number, default: 0, min: [0, 'Views cannot be negative'] },
     totalSales: { type: Number, default: 0, min: [0, 'Total sales cannot be negative'] },
+    embedding: { type: [Number] },
   },
   { timestamps: true }
 );

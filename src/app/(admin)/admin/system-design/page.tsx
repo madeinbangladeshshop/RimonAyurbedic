@@ -386,12 +386,8 @@ export default function SuperConfigPage() {
            </CardHeader>
            <CardContent className="p-6 space-y-6">
                <div className="space-y-2">
-                <Label htmlFor="openrouter-api-key" className="font-bold text-xs">OpenRouter API Key</Label>
-                <input id="openrouter-api-key" type="password" value={settings?.aiConfig?.openRouterApiKey || ''} onChange={(e) => setSettings({...settings, aiConfig: {...(settings?.aiConfig || {}), openRouterApiKey: e.target.value}})} className="w-full h-12 rounded-xl border px-4 text-sm" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="system-prompt" className="font-bold text-xs">System Training Prompt</Label>
-                <textarea id="system-prompt" value={settings?.aiConfig?.systemPrompt || ''} onChange={(e) => setSettings({...settings, aiConfig: {...(settings?.aiConfig || {}), systemPrompt: e.target.value}})} className="w-full h-24 rounded-xl border p-4 text-sm resize-none" />
+                <Label htmlFor="gemini-api-key" className="font-bold text-xs">Gemini API Key</Label>
+                <input id="gemini-api-key" type="text" value={settings?.aiConfig?.geminiApiKey || ''} onChange={(e) => setSettings({...settings, aiConfig: {...(settings?.aiConfig || {}), geminiApiKey: e.target.value}})} className="w-full h-12 rounded-xl border px-4 text-sm" />
               </div>
            </CardContent>
         </Card>

@@ -20,8 +20,7 @@ interface SettingsContextType {
     bodyFont?: string;
   };
   aiConfig?: {
-    openRouterApiKey?: string;
-    systemPrompt?: string;
+    geminiApiKey?: string;
   };
   footerNavigation?: {
     label: string;

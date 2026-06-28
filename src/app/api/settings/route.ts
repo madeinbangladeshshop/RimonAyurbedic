@@ -4,7 +4,6 @@ import connectToDatabase from '@/lib/db';
 import GlobalSettings from '@/models/GlobalSettings';
 import { auth } from '@/auth';
 
-
 // Helper to return settings without masking sensitive data or fallback to environment variables
 const getMaskedSettings = (raw: any, masked: any) => ({
   ...masked,
@@ -22,7 +21,7 @@ const getMaskedSettings = (raw: any, masked: any) => ({
   } : masked.paymentConfig,
   aiConfig: masked.aiConfig ? {
     ...masked.aiConfig,
-    openRouterApiKey: masked.aiConfig.openRouterApiKey || null,
+    geminiApiKey: masked.aiConfig.geminiApiKey || null,
   } : masked.aiConfig
 });
 
@@ -35,7 +34,7 @@ export async function GET() {
       return NextResponse.json({
         brandName: process.env.NEXT_PUBLIC_STORE_NAME || "Rimon Ayurbedic",
         contact: {
-          email: "support@rimonayurbedic.com",
+          email: "support@rimonherbal.com",
           phone: "+8801234567890",
           address: "Dhaka, Bangladesh"
         },

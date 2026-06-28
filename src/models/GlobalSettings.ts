@@ -70,8 +70,7 @@ export interface IGlobalSettings extends Document {
   googleSearchConsoleId?: string; // Search Console Site URL (e.g. https://www.example.com/ or sc-domain:example.com)
   superAdminNote?: string;
   aiConfig?: {
-    openRouterApiKey?: string;
-    systemPrompt?: string;
+    geminiApiKey?: string;
   };
   uiTemplates?: {
     layout?: string;
@@ -138,8 +137,7 @@ const GlobalSettingsSchema: Schema<IGlobalSettings> = new Schema(
     googleSearchConsoleId: { type: String },
     superAdminNote: { type: String },
     aiConfig: {
-      openRouterApiKey: { type: String, get: decrypt, set: encrypt },
-      systemPrompt: { type: String, default: 'You are a helpful e-commerce assistant.' }
+      geminiApiKey: { type: String }
     },
     uiTemplates: { type: Object, default: {} },
     saasSubscription: {
@@ -176,10 +174,6 @@ const GlobalSettingsSchema: Schema<IGlobalSettings> = new Schema(
         // Security: Remove sensitive Payment credentials
         if (ret.paymentConfig) {
           delete ret.paymentConfig.sslcommerz;
-        }
-        // Security: Remove sensitive AI API Key
-        if (ret.aiConfig) {
-          delete ret.aiConfig.openRouterApiKey;
         }
         // Security: Remove sensitive Facebook Access Token
         delete ret.facebookAccessToken;

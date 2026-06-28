@@ -220,7 +220,6 @@ export default function NavbarV2() {
             <div className="flex items-center gap-1 md:gap-3">
               <div className="hidden sm:flex items-center gap-2">
                 <ModeToggle />
-                {settings?.aiConfig?.openRouterApiKey && <AIChatbot />}
               </div>
 
               <Link href="/dashboard/wishlist" aria-label="Wishlist">
