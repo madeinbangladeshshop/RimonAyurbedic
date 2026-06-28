@@ -125,11 +125,10 @@ export function AIChatbot() {
         </div>
         <Button
           onClick={() => setIsOpen(true)}
-          size="icon"
-          className="rounded-full shadow-2xl h-10 w-10 md:h-12 md:w-12 bg-primary hover:bg-primary/95 text-primary-foreground border-2 border-white transition-all flex items-center justify-center"
+          className="rounded-full shadow-2xl h-10 w-10 md:h-12 md:w-12 bg-primary hover:bg-primary/95 text-primary-foreground border-2 border-white transition-all flex items-center justify-center p-0"
           aria-label="Open AI chat"
         >
-          <Bot className="h-5 w-5 md:h-6 md:w-6" />
+          <Bot className="h-7 w-7 md:h-8 md:w-8" />
         </Button>
       </motion.div>
 
@@ -140,7 +139,7 @@ export function AIChatbot() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-6 right-6 z-[60] w-[90vw] max-w-[400px] h-[600px] max-h-[80vh] bg-background border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="fixed bottom-20 md:bottom-6 right-6 z-[60] w-[90vw] max-w-[400px] h-[600px] max-h-[80vh] bg-background border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="p-4 bg-primary text-primary-foreground flex items-center justify-between shadow-md">
