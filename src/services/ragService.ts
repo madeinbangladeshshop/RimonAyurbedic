@@ -7,6 +7,7 @@ import Blog from '@/models/Blog';
 import FAQ from '@/models/FAQ';
 import Order from '@/models/Order';
 import Category from '@/models/Category';
+import Coupon from '@/models/Coupon';
 
 interface RetrievedDocument {
   source: string;
@@ -193,11 +194,54 @@ export async function retrieveRelevantContext(
     const totalCategoriesCount = await Category.countDocuments();
     const totalFAQsCount = await FAQ.countDocuments({ isActive: true });
 
+    // 5. Fetch active coupons
+    const now = new Date();
+    const activeCoupons = await Coupon.find({
+      isActive: true,
+      expiryDate: { $gt: now },
+      $or: [
+        { usageLimit: { $exists: false } },
+        { usageLimit: null },
+        { $expr: { $lt: ['$usedCount', '$usageLimit'] } }
+      ]
+    }).lean().exec();
+
+    // 6. Fetch discounted products (where salePrice is set and less than price)
+    const discountedProducts = await Product.find({
+      isPublished: true,
+      salePrice: { $exists: true, $gt: 0 }
+    }).select('name slug price salePrice').limit(10).lean().exec();
+
     contextString += `Global Platform Statistics:\n`;
     contextString += `- Total Active Products: ${totalProductsCount}\n`;
     contextString += `- Total Categories: ${totalCategoriesCount}\n`;
     contextString += `- Total FAQs: ${totalFAQsCount}\n\n`;
 
+    // Coupon context
+    if (activeCoupons.length > 0) {
+      contextString += `Active Coupon Offers (currently valid):\n`;
+      activeCoupons.forEach((coupon: any) => {
+        const discountText = coupon.discountType === 'percentage'
+          ? `${coupon.discountValue}% off`
+          : `৳${coupon.discountValue} off`;
+        contextString += `- Code: ${coupon.code} | Discount: ${discountText} | Min Purchase: ৳${coupon.minPurchase} | Expires: ${new Date(coupon.expiryDate).toLocaleDateString('en-BD')}\n`;
+      });
+      contextString += `\n`;
+    } else {
+      contextString += `Active Coupon Offers: No active coupon offers at the moment.\n\n`;
+    }
+
+    // Discounted products context
+    if (discountedProducts.length > 0) {
+      contextString += `Products Currently on Sale/Discount:\n`;
+      discountedProducts.forEach((product: any) => {
+        const discount = Math.round(((product.price - product.salePrice) / product.price) * 100);
+        contextString += `- [${product.name}](/product/${product.slug || product._id}) | Original: ৳${product.price} | Sale Price: ৳${product.salePrice} | Discount: ${discount}% off\n`;
+      });
+      contextString += `\n`;
+    } else {
+      contextString += `Products on Discount: No products currently on sale discount.\n\n`;
+    }
     // 5. Append general search results
     if (mergedResults.length > 0) {
       mergedResults.forEach((doc, index) => {
