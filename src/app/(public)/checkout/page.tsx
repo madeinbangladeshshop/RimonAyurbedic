@@ -45,13 +45,13 @@ import {
 } from "@/components/ui/dialog";
 
 const checkoutSchema = z.object({
-  fullName: z.string().min(2, 'Full name is required'),
-  phone: z.string().min(11, 'Invalid phone number'),
-  email: z.string().email('Invalid email address').optional().or(z.literal('')),
-  street: z.string().min(5, 'Street address is required'),
-  division: z.string().min(1, 'Division is required'),
-  district: z.string().min(1, 'District is required'),
-  thana: z.string().min(1, 'Thana is required'),
+  fullName: z.string().min(2, 'নাম আবশ্যক'),
+  phone: z.string().min(11, 'সঠিক মোবাইল নম্বর দিন'),
+  email: z.string().email('সঠিক ইমেইল এড্রেস দিন').optional().or(z.literal('')),
+  street: z.string().min(5, 'ঠিকানা আবশ্যক'),
+  division: z.string().min(1, 'বিভাগ আবশ্যক'),
+  district: z.string().min(1, 'জেলা আবশ্যক'),
+  thana: z.string().min(1, 'থানা আবশ্যক'),
   paymentMethod: z.enum(['COD', 'Online', 'Manual'], {
     message: 'Select a payment method'
   }),
@@ -115,7 +115,7 @@ export default function CheckoutPage() {
           fetch('/api/user/profile'),
           fetch('/api/settings')
         ]);
-        
+
         if (profileRes.ok) {
           const profileData = await profileRes.json();
           setProfile(profileData);
@@ -144,11 +144,11 @@ export default function CheckoutPage() {
             if (groupedForSync[key]) {
               groupedForSync[key].quantity += item.quantity;
             } else {
-              groupedForSync[key] = { 
-                productId: item.productId, 
-                color: item.color, 
-                size: item.size, 
-                quantity: item.quantity 
+              groupedForSync[key] = {
+                productId: item.productId,
+                color: item.color,
+                size: item.size,
+                quantity: item.quantity
               };
             }
           });
@@ -158,10 +158,10 @@ export default function CheckoutPage() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ items: Object.values(groupedForSync) })
           });
-          
+
           if (syncRes.ok) {
             const { validItems, removedCount, hasInsufficientStock } = await syncRes.json();
-            
+
             // If items were removed (product/variant no longer exists)
             if (removedCount > 0) {
               dispatch(syncItems(validItems));
@@ -170,12 +170,12 @@ export default function CheckoutPage() {
 
             // If stock is insufficient, we'll store this state locally to show warnings
             setSyncData({ validItems, hasInsufficientStock });
-            
+
             if (hasInsufficientStock) {
               toast.error('Some items in your cart have insufficient stock. Please adjust quantities.');
             }
           } else {
-             console.error('Cart sync failed:', await syncRes.text());
+            console.error('Cart sync failed:', await syncRes.text());
           }
         }
       } catch (error) {
@@ -188,7 +188,7 @@ export default function CheckoutPage() {
   // Re-sync cart stock when items change (including quantity)
   useEffect(() => {
     if (!isHydrated || items.length === 0) return;
-    
+
     const syncCartStock = async () => {
       try {
         const groupedForSync: Record<string, any> = {};
@@ -197,11 +197,11 @@ export default function CheckoutPage() {
           if (groupedForSync[key]) {
             groupedForSync[key].quantity += item.quantity;
           } else {
-            groupedForSync[key] = { 
-              productId: item.productId, 
-              color: item.color, 
-              size: item.size, 
-              quantity: item.quantity 
+            groupedForSync[key] = {
+              productId: item.productId,
+              color: item.color,
+              size: item.size,
+              quantity: item.quantity
             };
           }
         });
@@ -211,7 +211,7 @@ export default function CheckoutPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ items: Object.values(groupedForSync) })
         });
-        
+
         if (syncRes.ok) {
           const data = await syncRes.json();
           setSyncData({ validItems: data.validItems, hasInsufficientStock: data.hasInsufficientStock });
@@ -252,7 +252,7 @@ export default function CheckoutPage() {
       ttEvent('InitiateCheckout', checkoutPayload, initiateUserData);
       hasTrackedInitiate.current = true;
     }
-  }, [isHydrated, items, totalAmount]); 
+  }, [isHydrated, items, totalAmount]);
 
   const submissionSucceededRef = useRef(false);
 
@@ -279,26 +279,26 @@ export default function CheckoutPage() {
     try {
       const orderData = {
         items: items.map(item => ({
-            product: item.productId,
-            name: item.name,
-            quantity: item.quantity,
-            price: item.price,
-            image: item.image,
-            color: item.color,
-            size: item.size
+          product: item.productId,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          image: item.image,
+          color: item.color,
+          size: item.size
         })),
         shippingAddress: {
-            fullName: values.fullName,
-            phone: values.phone,
-            email: values.email || profile?.email || `${values.phone}@store.com`,
-            street: values.street,
-            city: values.thana,
-            state: values.district,
-            division: values.division,
-            district: values.district,
-            thana: values.thana,
-            zipCode: '0000',
-            country: 'Bangladesh'
+          fullName: values.fullName,
+          phone: values.phone,
+          email: values.email || profile?.email || `${values.phone}@store.com`,
+          street: values.street,
+          city: values.thana,
+          state: values.district,
+          division: values.division,
+          district: values.district,
+          thana: values.thana,
+          zipCode: '0000',
+          country: 'Bangladesh'
         },
         paymentMethod: values.paymentMethod,
         deliveryCharge: deliveryCharge,
@@ -320,7 +320,7 @@ export default function CheckoutPage() {
       if (response.ok) {
         const order = await response.json();
         submissionSucceededRef.current = true;
-        
+
         if (values.paymentMethod === 'Online') {
           // Initialize SSLCommerz Payment
           const initRes = await fetch('/api/payment/init', {
@@ -382,7 +382,7 @@ export default function CheckoutPage() {
   const applyCoupon = async (codeToUse?: string) => {
     const code = codeToUse || couponCode;
     if (!code.trim()) return;
-    
+
     setApplyingCoupon(true);
     try {
       const res = await fetch('/api/coupons/validate', {
@@ -426,13 +426,13 @@ export default function CheckoutPage() {
   };
 
 
-  
+
   const freeDeliveryThreshold = settings?.freeDeliveryThreshold || 0;
   const isFreeDelivery = freeDeliveryThreshold > 0 && totalAmount >= freeDeliveryThreshold;
-  
+
   const chargeInsideDhaka = settings?.deliveryChargeInsideDhaka || 60;
   const chargeOutsideDhaka = settings?.deliveryChargeOutsideDhaka || 120;
-  
+
   const totalProductDiscount = items.reduce((sum, item) => {
     const itemBasePrice = item.basePrice || item.price;
     return sum + Math.max(0, itemBasePrice - item.price) * item.quantity;
@@ -445,8 +445,8 @@ export default function CheckoutPage() {
 
   const totalAfterCoupon = Math.max(0, totalAmount + deliveryCharge - couponDiscount);
 
-  const walletAmountToUse = useWallet && profile?.walletBalance 
-    ? Math.min(profile.walletBalance, totalAfterCoupon) 
+  const walletAmountToUse = useWallet && profile?.walletBalance
+    ? Math.min(profile.walletBalance, totalAfterCoupon)
     : 0;
 
   const finalTotal = totalAfterCoupon - walletAmountToUse;
@@ -454,9 +454,9 @@ export default function CheckoutPage() {
   // Validation check for mandatory fields to show/hide the order button
   const watchedFields = form.watch();
   const isFormValid = !!(
-    watchedFields.fullName?.trim() && 
-    watchedFields.phone?.trim() && 
-    watchedFields.street?.trim() && 
+    watchedFields.fullName?.trim() &&
+    watchedFields.phone?.trim() &&
+    watchedFields.street?.trim() &&
     watchedFields.division &&
     watchedFields.district &&
     watchedFields.thana &&
@@ -468,12 +468,12 @@ export default function CheckoutPage() {
     : 0;
 
   const handleUpdateQuantity = (item: any, delta: number) => {
-      if (item.quantity + delta === 0) {
-          dispatch(removeFromCart({ productId: item.productId, color: item.color, size: item.size }));
-          toast.info(`${item.name} removed from cart`);
-      } else {
-          dispatch(addToCart({ ...item, quantity: delta }));
-      }
+    if (item.quantity + delta === 0) {
+      dispatch(removeFromCart({ productId: item.productId, color: item.color, size: item.size }));
+      toast.info(`${item.name} removed from cart`);
+    } else {
+      dispatch(addToCart({ ...item, quantity: delta }));
+    }
   };
 
   // Show loading state or nothing while hydrating to prevent flash of "empty cart" redirect
@@ -512,7 +512,7 @@ export default function CheckoutPage() {
                             </p>
                           )}
                         </div>
-                        <button 
+                        <button
                           onClick={() => {
                             dispatch(removeFromCart({ productId: item.productId, color: item.color, size: item.size }));
                             toast.info(`${item.name} removed from cart`);
@@ -523,11 +523,11 @@ export default function CheckoutPage() {
                           <X className="h-3.5 w-3.5" />
                         </button>
                       </div>
-                      
+
                       <div className="flex items-center justify-between">
                         <div className="flex items-center border rounded-full bg-muted/50 scale-90 -ml-2">
-                          <button 
-                            type="button" 
+                          <button
+                            type="button"
                             onClick={() => handleUpdateQuantity(item, -1)}
                             className="h-7 w-7 flex items-center justify-center hover:bg-muted rounded-full transition-colors"
                             aria-label={`Decrease quantity of ${item.name}`}
@@ -535,7 +535,7 @@ export default function CheckoutPage() {
                             <Minus className="h-3 w-3" />
                           </button>
                           <span className="w-6 text-center text-xs font-bold">{item.quantity}</span>
-                          <button 
+                          <button
                             type="button"
                             onClick={() => handleUpdateQuantity(item, 1)}
                             className="h-7 w-7 flex items-center justify-center hover:bg-muted rounded-full transition-colors"
@@ -546,21 +546,21 @@ export default function CheckoutPage() {
                         </div>
                         <div className="text-right">
                           <p className="text-sm font-bold text-primary">৳{Math.round(item.price * item.quantity)}</p>
-                          {syncData?.validItems?.find((v: any) => 
-                            v.productId === item.productId && 
-                            v.color === item.color && 
+                          {syncData?.validItems?.find((v: any) =>
+                            v.productId === item.productId &&
+                            v.color === item.color &&
                             v.size === item.size
                           )?.isInsufficient && (
-                            <p className="text-[9px] text-destructive font-black animate-pulse mt-1">
-                              INSUFFICIENT STOCK (Available: {
-                                syncData.validItems.find((v: any) => 
-                                  v.productId === item.productId && 
-                                  v.color === item.color && 
-                                  v.size === item.size
-                                ).availableStock
-                              })
-                            </p>
-                          )}
+                              <p className="text-[9px] text-destructive font-black animate-pulse mt-1">
+                                INSUFFICIENT STOCK (Available: {
+                                  syncData.validItems.find((v: any) =>
+                                    v.productId === item.productId &&
+                                    v.color === item.color &&
+                                    v.size === item.size
+                                  ).availableStock
+                                })
+                              </p>
+                            )}
                         </div>
                       </div>
                     </div>
@@ -589,7 +589,7 @@ export default function CheckoutPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-xl">
                     <Truck className="h-6 w-6 text-primary" />
-                    Delivery Information
+                    ডেলিভারি তথ্য
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -598,9 +598,9 @@ export default function CheckoutPage() {
                     name="fullName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Full Name</FormLabel>
+                        <FormLabel>পূর্ণ নাম</FormLabel>
                         <FormControl>
-                          <Input placeholder="John Doe" {...field} className="h-11 focus-visible:ring-primary/20" />
+                          <Input placeholder="আপনার পূর্ণ নাম লিখুন" {...field} className="h-11 focus-visible:ring-primary/20" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -611,9 +611,9 @@ export default function CheckoutPage() {
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Mobile Number</FormLabel>
+                        <FormLabel>মোবাইল নম্বর</FormLabel>
                         <FormControl>
-                          <Input placeholder="017XXXXXXXX" {...field} className="h-11 focus-visible:ring-primary/20" />
+                          <Input placeholder="যেমন: 017XXXXXXXX" {...field} className="h-11 focus-visible:ring-primary/20" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -625,11 +625,11 @@ export default function CheckoutPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Email Address{' '}
-                          <span className="text-muted-foreground font-normal text-xs">(Optional)</span>
+                          ইমেইল এড্রেস{' '}
+                          <span className="text-muted-foreground font-normal text-xs">(ঐচ্ছিক)</span>
                         </FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="example@mail.com" {...field} className="h-11 focus-visible:ring-primary/20" />
+                          <Input type="email" placeholder="যেমন: example@mail.com" {...field} className="h-11 focus-visible:ring-primary/20" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -640,9 +640,9 @@ export default function CheckoutPage() {
                     name="street"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Address Line</FormLabel>
+                        <FormLabel>ঠিকানা</FormLabel>
                         <FormControl>
-                          <Input placeholder="House #, Road #, Area" {...field} className="h-11 focus-visible:ring-primary/20" />
+                          <Input placeholder="বাসা নং, রোড নং, এলাকা" {...field} className="h-11 focus-visible:ring-primary/20" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -655,7 +655,7 @@ export default function CheckoutPage() {
                       name="division"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Division</FormLabel>
+                          <FormLabel>বিভাগ</FormLabel>
                           <Select
                             onValueChange={(value) => {
                               field.onChange(value);
@@ -666,7 +666,7 @@ export default function CheckoutPage() {
                           >
                             <FormControl>
                               <SelectTrigger className="h-11 focus:ring-primary/20">
-                                <SelectValue placeholder="Select division" />
+                                <SelectValue placeholder="বিভাগ নির্বাচন করুন" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -684,7 +684,7 @@ export default function CheckoutPage() {
                       name="district"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>District</FormLabel>
+                          <FormLabel>জেলা</FormLabel>
                           <Select
                             onValueChange={(value) => {
                               field.onChange(value);
@@ -695,7 +695,7 @@ export default function CheckoutPage() {
                           >
                             <FormControl>
                               <SelectTrigger className="h-11 focus:ring-primary/20">
-                                <SelectValue placeholder="Select district" />
+                                <SelectValue placeholder="জেলা নির্বাচন করুন" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -713,7 +713,7 @@ export default function CheckoutPage() {
                       name="thana"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Thana</FormLabel>
+                          <FormLabel>থানা</FormLabel>
                           <Select
                             onValueChange={field.onChange}
                             value={field.value}
@@ -721,7 +721,7 @@ export default function CheckoutPage() {
                           >
                             <FormControl>
                               <SelectTrigger className="h-11 focus:ring-primary/20">
-                                <SelectValue placeholder="Select thana" />
+                                <SelectValue placeholder="থানা নির্বাচন করুন" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -747,28 +747,28 @@ export default function CheckoutPage() {
                   {/* Coupon Section */}
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
-                      <Input 
-                        placeholder="Coupon Code" 
+                      <Input
+                        placeholder="Coupon Code"
                         value={couponCode}
                         onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                         disabled={!!appliedCoupon || applyingCoupon}
                         className="h-10 text-xs"
                       />
                       {appliedCoupon ? (
-                        <Button 
-                          type="button" 
-                          variant="destructive" 
-                          size="sm" 
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
                           onClick={removeCoupon}
                           className="h-10 px-3"
                         >
                           Remove
                         </Button>
                       ) : (
-                        <Button 
-                          type="button" 
-                          size="sm" 
-                          onClick={() => applyCoupon()} 
+                        <Button
+                          type="button"
+                          size="sm"
+                          onClick={() => applyCoupon()}
                           disabled={applyingCoupon || !couponCode}
                           className="h-10 px-4"
                         >
@@ -873,20 +873,20 @@ export default function CheckoutPage() {
                               </FormItem>
                             )}
 
-                            {(settings?.manualPaymentConfig?.bkash?.active || 
-                              settings?.manualPaymentConfig?.nagad?.active || 
+                            {(settings?.manualPaymentConfig?.bkash?.active ||
+                              settings?.manualPaymentConfig?.nagad?.active ||
                               settings?.manualPaymentConfig?.rocket?.active ||
                               settings?.manualPaymentConfig?.banglaQr?.active) && (
-                              <FormItem className="flex items-center space-x-3 space-y-0 border rounded-lg p-4 cursor-pointer hover:bg-muted/50 transition-colors">
-                                <FormControl>
-                                  <RadioGroupItem value="Manual" />
-                                </FormControl>
-                                <FormLabel className="font-bold flex-1 cursor-pointer">
-                                  Manual Payment (MFS / Bangla QR)
-                                  <p className="text-xs font-normal text-muted-foreground mt-1">Send money manually or scan QR to pay.</p>
-                                </FormLabel>
-                              </FormItem>
-                            )}
+                                <FormItem className="flex items-center space-x-3 space-y-0 border rounded-lg p-4 cursor-pointer hover:bg-muted/50 transition-colors">
+                                  <FormControl>
+                                    <RadioGroupItem value="Manual" />
+                                  </FormControl>
+                                  <FormLabel className="font-bold flex-1 cursor-pointer">
+                                    Manual Payment (MFS / Bangla QR)
+                                    <p className="text-xs font-normal text-muted-foreground mt-1">Send money manually or scan QR to pay.</p>
+                                  </FormLabel>
+                                </FormItem>
+                              )}
                           </RadioGroup>
                         </FormControl>
                         <FormMessage />
@@ -902,15 +902,14 @@ export default function CheckoutPage() {
                         if (!config?.active) return null;
                         const isSelected = selectedMethod?.id === method;
                         return (
-                          <div 
-                            key={method} 
+                          <div
+                            key={method}
                             onClick={() => {
                               setSelectedMethod({ id: method, ...config });
                               setShowPaymentModal(true);
                             }}
-                            className={`p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col items-center gap-2 hover:bg-muted/50 ${
-                              isSelected ? 'border-primary bg-primary/5' : 'border-muted'
-                            }`}
+                            className={`p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col items-center gap-2 hover:bg-muted/50 ${isSelected ? 'border-primary bg-primary/5' : 'border-muted'
+                              }`}
                           >
                             <div className="h-10 w-10 flex items-center justify-center">
                               {method === 'banglaQr' ? (
@@ -930,7 +929,7 @@ export default function CheckoutPage() {
                       })}
                     </div>
                   )}
-                  
+
                   {/* Validation Message for Manual Payment */}
                   {form.watch('paymentMethod') === 'Manual' && !selectedMethod?.id && (
                     <p className="text-[10px] text-destructive font-bold text-center mt-2 animate-pulse">
@@ -942,9 +941,9 @@ export default function CheckoutPage() {
                     <div className="p-4 border rounded-lg bg-primary/5 border-primary/20">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <input 
-                            type="checkbox" 
-                            id="use-wallet" 
+                          <input
+                            type="checkbox"
+                            id="use-wallet"
                             checked={useWallet}
                             onChange={(e) => setUseWallet(e.target.checked)}
                             className="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary"
@@ -960,13 +959,12 @@ export default function CheckoutPage() {
                   )}
                 </CardContent>
                 <CardFooter className="pt-2 border-t flex flex-col gap-3">
-                  <Button 
+                  <Button
                     type="submit"
-                    className={`w-full h-14 rounded-full font-black uppercase tracking-widest text-sm transition-all ${
-                      isFormValid && !syncData?.hasInsufficientStock
-                      ? 'bg-primary shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95' 
-                      : 'bg-muted text-muted-foreground cursor-not-allowed opacity-70'
-                    }`}
+                    className={`w-full h-14 rounded-full font-black uppercase tracking-widest text-sm transition-all ${isFormValid && !syncData?.hasInsufficientStock
+                        ? 'bg-primary shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95'
+                        : 'bg-muted text-muted-foreground cursor-not-allowed opacity-70'
+                      }`}
                     disabled={loading || !isFormValid || syncData?.hasInsufficientStock}
                   >
                     {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <CheckCircle2 className="mr-2 h-5 w-5" />}
@@ -1018,9 +1016,9 @@ export default function CheckoutPage() {
                     <p className="text-lg font-black tracking-widest text-slate-900 dark:text-zinc-50 bg-white dark:bg-zinc-800 px-3 py-1.5 rounded-lg border border-primary/10 flex-1 text-center select-all">
                       {selectedMethod?.number}
                     </p>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button
+                      variant="outline"
+                      size="sm"
                       className="h-9 rounded-lg text-[10px] font-bold border hover:bg-primary hover:text-white transition-all shrink-0"
                       onClick={() => {
                         navigator.clipboard.writeText(selectedMethod?.number);
@@ -1032,7 +1030,7 @@ export default function CheckoutPage() {
                   </div>
                 </>
               )}
-              
+
               {(selectedMethod?.qrCode || selectedMethod?.id === 'banglaQr') && (
                 <div className="flex flex-col items-center gap-1.5 pt-2 border-t border-primary/10">
                   <p className="text-[9px] font-bold uppercase opacity-40">Scan QR Code to Pay</p>
@@ -1063,22 +1061,20 @@ export default function CheckoutPage() {
               <button
                 type="button"
                 onClick={() => setPaymentDetailTab('phone')}
-                className={`flex-1 pb-1.5 text-[11px] font-bold text-center border-b-2 transition-all ${
-                  paymentDetailTab === 'phone'
+                className={`flex-1 pb-1.5 text-[11px] font-bold text-center border-b-2 transition-all ${paymentDetailTab === 'phone'
                     ? 'border-primary text-primary'
                     : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-zinc-200'
-                }`}
+                  }`}
               >
                 {selectedMethod?.id === 'bkash' ? 'বিকাশ' : selectedMethod?.id === 'nagad' ? 'নগদ' : selectedMethod?.id === 'rocket' ? 'রকেট' : 'মোবাইল'} নম্বর দিয়ে
               </button>
               <button
                 type="button"
                 onClick={() => setPaymentDetailTab('trx')}
-                className={`flex-1 pb-1.5 text-[11px] font-bold text-center border-b-2 transition-all ${
-                  paymentDetailTab === 'trx'
+                className={`flex-1 pb-1.5 text-[11px] font-bold text-center border-b-2 transition-all ${paymentDetailTab === 'trx'
                     ? 'border-primary text-primary'
                     : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-zinc-200'
-                }`}
+                  }`}
               >
                 ট্রানজেকশন আইডি (TrxID) দিয়ে
               </button>
@@ -1089,20 +1085,20 @@ export default function CheckoutPage() {
               {paymentDetailTab === 'phone' ? (
                 <div className="space-y-1.5">
                   <Label className="text-[10px] font-black uppercase opacity-60">আপনার {selectedMethod?.id === 'bkash' ? 'বিকাশ' : selectedMethod?.id === 'nagad' ? 'নগদ' : selectedMethod?.id === 'rocket' ? 'রকেট' : 'মোবাইল'} নম্বর</Label>
-                  <Input 
-                    placeholder="যে নম্বর থেকে টাকা পাঠিয়েছেন (যেমন: 017XXXXXXXX)" 
+                  <Input
+                    placeholder="যে নম্বর থেকে টাকা পাঠিয়েছেন (যেমন: 017XXXXXXXX)"
                     value={manualDetails.senderNumber}
-                    onChange={(e) => setManualDetails({...manualDetails, senderNumber: e.target.value})}
+                    onChange={(e) => setManualDetails({ ...manualDetails, senderNumber: e.target.value })}
                     className="h-10 rounded-lg text-xs focus:ring-primary/20 bg-background"
                   />
                 </div>
               ) : (
                 <div className="space-y-1.5">
                   <Label className="text-[10px] font-black uppercase opacity-60">ট্রানজেকশন আইডি (TrxID)</Label>
-                  <Input 
-                    placeholder="যেমন: 8N7A6D5C" 
+                  <Input
+                    placeholder="যেমন: 8N7A6D5C"
                     value={manualDetails.transactionId}
-                    onChange={(e) => setManualDetails({...manualDetails, transactionId: e.target.value.toUpperCase()})}
+                    onChange={(e) => setManualDetails({ ...manualDetails, transactionId: e.target.value.toUpperCase() })}
                     className="h-10 rounded-lg text-xs focus:ring-primary/20 bg-background"
                   />
                 </div>
@@ -1111,16 +1107,16 @@ export default function CheckoutPage() {
 
             {settings?.manualPaymentConfig?.instructions && (
               <div className="p-3 bg-muted/30 rounded-lg">
-                  <p className="text-[9px] leading-relaxed text-muted-foreground italic">
-                     <strong>নির্দেশনা:</strong> {settings.manualPaymentConfig.instructions}
-                  </p>
+                <p className="text-[9px] leading-relaxed text-muted-foreground italic">
+                  <strong>নির্দেশনা:</strong> {settings.manualPaymentConfig.instructions}
+                </p>
               </div>
             )}
           </div>
 
           <DialogFooter className="p-4 bg-muted/20 border-t flex flex-row gap-3 shrink-0">
             <Button variant="outline" onClick={() => setShowPaymentModal(false)} className="rounded-full h-10 flex-1 font-bold text-xs bg-background">বাতিল করুন</Button>
-            <Button 
+            <Button
               disabled={
                 paymentDetailTab === 'phone'
                   ? !manualDetails.senderNumber.trim()
@@ -1136,7 +1132,7 @@ export default function CheckoutPage() {
                   setShowPaymentModal(false);
                   toast.error('দয়া করে ডেলিভারি তথ্য সম্পূর্ণ করুন!');
                 }
-              }} 
+              }}
               className="rounded-full h-10 flex-1 font-black uppercase tracking-widest text-xs shadow-md shadow-primary/10"
             >
               পেমেন্ট নিশ্চিত করুন
