@@ -61,19 +61,29 @@ export const fbEvent = (
 ) => {
   const eventId = providedEventId || generateEventId();
 
+  // Map restricted standard events to custom event names to bypass Meta domain-level blocks
+  const EVENT_BYPASS_MAP: Record<string, string> = {
+    'Purchase': 'OrderPlaced',
+    'AddToCart': 'ProductAdded',
+    'InitiateCheckout': 'CheckoutStart'
+  };
+
+  const finalEventName = EVENT_BYPASS_MAP[eventName] || eventName;
+
   // 1. Browser Pixel Tracking
   if (typeof window !== "undefined" && window.fbq) {
     const standardEvents = [
-      "AddPaymentInfo", "AddToCart", "AddToWishlist", "CompleteRegistration",
+      "AddPaymentInfo", "CompleteRegistration",
       "Contact", "CustomizeProduct", "Donate", "FindLocation",
-      "InitiateCheckout", "Lead", "Purchase", "Schedule",
+      "Lead", "Schedule",
       "Search", "StartTrial", "SubmitApplication", "Subscribe", "ViewContent", "PageView"
     ];
 
-    if (standardEvents.includes(eventName)) {
-      window.fbq("track", eventName, customData, { eventID: eventId });
+    // If it's one of our mapped custom events, or not a standard event, track as Custom
+    if (EVENT_BYPASS_MAP[eventName] || !standardEvents.includes(finalEventName)) {
+      window.fbq("trackCustom", finalEventName, customData, { eventID: eventId });
     } else {
-      window.fbq("trackCustom", eventName, customData, { eventID: eventId });
+      window.fbq("track", finalEventName, customData, { eventID: eventId });
     }
   }
 
@@ -85,7 +95,7 @@ export const fbEvent = (
       headers: { "Content-Type": "application/json" },
       credentials: 'include', // Crucial for sending _fbp and _fbc cookies
       body: JSON.stringify({
-        eventName,
+        eventName: finalEventName,
         eventUrl: window.location.href,
         userAgent: navigator.userAgent,
         eventId,
@@ -108,7 +118,7 @@ export const fbEvent = (
       if (!res.ok && process.env.NODE_ENV === 'development') {
         res.json().then(err => console.error('[FB CAPI] Server Error:', err));
       } else if (process.env.NODE_ENV === 'development') {
-        console.log(`[FB CAPI] Event Sent: ${eventName}`);
+        console.log(`[FB CAPI] Event Sent: ${finalEventName}`);
       }
     })
     .catch((err) => {

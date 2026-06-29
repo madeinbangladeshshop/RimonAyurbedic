@@ -70,7 +70,7 @@ export default function ProductCardV6({ product, isFlashSale, priority }: Produc
       // Track AddToCart
       const addToCartPayload = {
         content_name: product.name,
-        content_category: product.categories?.[0]?.name || 'Uncategorized',
+        content_category: 'Beauty',
         content_ids: [product._id],
         content_type: 'product',
         value: product.salePrice || product.price,
@@ -111,7 +111,7 @@ export default function ProductCardV6({ product, isFlashSale, priority }: Produc
     // Track InitiateCheckout
     const initiateCheckoutPayload = {
       content_name: product.name,
-      content_category: product.categories?.[0]?.name || 'Uncategorized',
+      content_category: 'Beauty',
       content_ids: [product._id],
       content_type: 'product',
       value: product.salePrice || product.price,
