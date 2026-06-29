@@ -15,10 +15,6 @@ export async function GET(
   try {
     const { slug } = await params;
     const session = await auth();
-    if (!session || !session.user) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-    }
-
     if (!mongoose.isValidObjectId(slug)) {
       return NextResponse.json({ message: 'Invalid order ID' }, { status: 400 });
     }
@@ -32,11 +28,12 @@ export async function GET(
       return NextResponse.json({ message: 'Order not found' }, { status: 404 });
     }
 
-    // Authorization: Must be an admin OR the owner of the order
-    const isAdmin = ['admin', 'super_admin'].includes((session.user as any)?.role);
-    const isOwner = order.user?._id?.toString() === (session.user as any).id;
+    // Authorization: Must be an admin OR the owner of the order OR it is a guest order
+    const isAdmin = session?.user && ['admin', 'super_admin'].includes((session.user as any)?.role);
+    const isOwner = session?.user && order.user?._id?.toString() === (session.user as any).id;
+    const isGuestOrder = !order.user;
 
-    if (!isAdmin && !isOwner) {
+    if (!isAdmin && !isOwner && !isGuestOrder) {
       return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
 
