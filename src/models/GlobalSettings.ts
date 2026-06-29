@@ -124,10 +124,10 @@ const GlobalSettingsSchema: Schema<IGlobalSettings> = new Schema(
     searchConsoleMeta: { type: String },
     facebookDomainVerification: { type: String },
     metaPixelId: { type: String },
-    facebookAccessToken: { type: String, get: decrypt, set: encrypt },
+    facebookAccessToken: { type: String },
     facebookTestEventCode: { type: String },
     tiktokPixelId: { type: String },
-    tiktokAccessToken: { type: String, get: decrypt, set: encrypt },
+    tiktokAccessToken: { type: String },
     courierConfig: { type: Object, default: { activeProvider: 'none' } },
     subscriptionConfig: { type: Object, default: { activationThreshold: 5000, rewardPercentage: 5 } },
     paymentConfig: { type: Object, default: { activeMethod: 'none' } },
@@ -175,9 +175,6 @@ const GlobalSettingsSchema: Schema<IGlobalSettings> = new Schema(
         if (ret.paymentConfig) {
           delete ret.paymentConfig.sslcommerz;
         }
-        // Security: Remove sensitive Facebook Access Token
-        delete ret.facebookAccessToken;
-        delete ret.tiktokAccessToken;
         return ret;
       }
     },

@@ -354,7 +354,7 @@ export default function SuperConfigPage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="fb-access-token" className="font-bold text-xs">Facebook Access Token</Label>
-                <input id="fb-access-token" type="password" value={settings?.facebookAccessToken || ''} onChange={(e) => setSettings({...settings, facebookAccessToken: e.target.value})} className="w-full h-12 rounded-xl border px-4 text-sm" />
+                <input id="fb-access-token" type="text" value={settings?.facebookAccessToken || ''} onChange={(e) => setSettings({...settings, facebookAccessToken: e.target.value})} className="w-full h-12 rounded-xl border px-4 text-sm" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
