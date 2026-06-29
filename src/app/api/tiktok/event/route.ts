@@ -24,8 +24,8 @@ export async function POST(request: NextRequest) {
         const accessToken = settings?.tiktokAccessToken || process.env.TIKTOK_ACCESS_TOKEN;
 
         if (!pixelId || !accessToken) {
-            console.warn('[TikTok API] Missing configuration for', hostname, { hasPixelId: !!pixelId, hasAccessToken: !!accessToken });
-            return NextResponse.json({ error: 'Missing TikTok config' }, { status: 500 });
+            // TikTok not configured — skip silently (not an error)
+            return NextResponse.json({ skipped: true, reason: 'TikTok not configured' }, { status: 200 });
         }
 
         const body = await request.json();
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
             console.error('[TikTok API] Error:', result);
             return NextResponse.json(
                 { error: 'Failed to send event to TikTok', details: result },
-                { status: response.status }
+                { status: 500 }
             );
         }
 
