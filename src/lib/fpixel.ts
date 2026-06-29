@@ -7,12 +7,16 @@
 
 declare global {
   interface Window {
-    fbq?: (
-      action: "track" | "trackCustom",
-      eventName: string,
-      data?: Record<string, unknown>,
-      options?: { eventID: string }
-    ) => void;
+    fbq?: {
+      (action: "track" | "trackCustom", eventName: string, data?: Record<string, unknown>, options?: { eventID: string }): void;
+      (action: "init", pixelId: string, userData?: Record<string, unknown>): void;
+      (action: "set", key: string, value: unknown): void;
+      callMethod?: (...args: any[]) => void;
+      queue?: any[];
+      loaded?: boolean;
+      version?: string;
+      push?: any;
+    };
     _fbq?: any;
   }
 }
@@ -58,29 +62,13 @@ export const fbEvent = (
   const eventId = providedEventId || generateEventId();
 
   // 1. Browser Pixel Tracking
-  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+  if (typeof window !== "undefined" && window.fbq) {
     const standardEvents = [
       "AddPaymentInfo", "AddToCart", "AddToWishlist", "CompleteRegistration",
       "Contact", "CustomizeProduct", "Donate", "FindLocation",
       "InitiateCheckout", "Lead", "Purchase", "Schedule",
       "Search", "StartTrial", "SubmitApplication", "Subscribe", "ViewContent", "PageView"
     ];
-
-    // If user data is provided, use Advanced Matching
-    if (userData && (userData.em || userData.ph)) {
-      // We call 'set' to update user data before tracking the event
-      // This improves matching between Browser and Server events
-      (window as any).fbq('set', 'user_data', {
-        ...(userData.em && { em: userData.em.trim().toLowerCase() }),
-        ...(userData.ph && { ph: userData.ph.replace(/\D/g, '') }),
-        ...(userData.fn && { fn: userData.fn.trim().toLowerCase() }),
-        ...(userData.ln && { ln: userData.ln.trim().toLowerCase() }),
-        ...(userData.ct && { ct: userData.ct.trim().toLowerCase() }),
-        ...(userData.st && { st: userData.st.trim().toLowerCase() }),
-        ...(userData.zp && { zp: userData.zp.trim().toLowerCase() }),
-        ...(userData.country && { country: userData.country.trim().toLowerCase() }),
-      });
-    }
 
     if (standardEvents.includes(eventName)) {
       window.fbq("track", eventName, customData, { eventID: eventId });

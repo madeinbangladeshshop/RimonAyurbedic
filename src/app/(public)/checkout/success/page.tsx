@@ -57,6 +57,26 @@ function SuccessContent() {
             country: 'bd'
           };
 
+          // Wait for fbq pixel to be initialized (max 5 seconds)
+          // The CAPI (server-side) fetch in fbEvent fires regardless of fbq state
+          const waitForFbq = (maxWaitMs = 5000, intervalMs = 200) =>
+            new Promise<void>((resolve) => {
+              if (typeof window !== 'undefined' && window.fbq) {
+                resolve();
+                return;
+              }
+              let elapsed = 0;
+              const timer = setInterval(() => {
+                elapsed += intervalMs;
+                if ((typeof window !== 'undefined' && window.fbq) || elapsed >= maxWaitMs) {
+                  clearInterval(timer);
+                  resolve();
+                }
+              }, intervalMs);
+            });
+
+          await waitForFbq();
+
           fbEvent('Purchase', customEventData, userEventData, orderData._id);
           ttEvent('Purchase', customEventData, userEventData, orderData._id);
         }

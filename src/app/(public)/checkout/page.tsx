@@ -230,28 +230,47 @@ export default function CheckoutPage() {
   const hasTrackedInitiate = useRef(false);
   // Track InitiateCheckout
   useEffect(() => {
-    if (isHydrated && items.length > 0 && !hasTrackedInitiate.current) {
-      const validItems = items.filter(i => i.productId);
-      if (validItems.length === 0) return;
+    if (!isHydrated || items.length === 0 || hasTrackedInitiate.current) return;
 
-      const checkoutPayload = {
-        content_ids: validItems.map(i => i.productId),
-        content_type: 'product',
-        value: totalAmount,
-        currency: 'BDT',
-        num_items: validItems.length,
-        contents: validItems.map(i => ({
-          id: i.productId,
-          quantity: i.quantity,
-          item_price: i.price
-        }))
-      };
+    const validItems = items.filter(i => i.productId);
+    if (validItems.length === 0) return;
 
-      const initiateUserData = { em: profile?.email, country: 'bd' };
+    hasTrackedInitiate.current = true;
+
+    const checkoutPayload = {
+      content_ids: validItems.map(i => i.productId),
+      content_type: 'product',
+      value: totalAmount,
+      currency: 'BDT',
+      num_items: validItems.length,
+      contents: validItems.map(i => ({
+        id: i.productId,
+        quantity: i.quantity,
+        item_price: i.price
+      }))
+    };
+
+    const initiateUserData = { em: profile?.email, country: 'bd' };
+
+    // Wait for fbq to initialize before firing browser pixel
+    // CAPI still fires immediately regardless
+    const waitForFbq = (maxWaitMs = 5000, intervalMs = 200) =>
+      new Promise<void>((resolve) => {
+        if (typeof window !== 'undefined' && window.fbq) { resolve(); return; }
+        let elapsed = 0;
+        const timer = setInterval(() => {
+          elapsed += intervalMs;
+          if ((typeof window !== 'undefined' && window.fbq) || elapsed >= maxWaitMs) {
+            clearInterval(timer);
+            resolve();
+          }
+        }, intervalMs);
+      });
+
+    waitForFbq().then(() => {
       fbEvent('InitiateCheckout', checkoutPayload, initiateUserData);
       ttEvent('InitiateCheckout', checkoutPayload, initiateUserData);
-      hasTrackedInitiate.current = true;
-    }
+    });
   }, [isHydrated, items, totalAmount]);
 
   const submissionSucceededRef = useRef(false);
@@ -344,26 +363,8 @@ export default function CheckoutPage() {
             router.push(`/checkout/success?id=${order._id}`);
           }
         } else {
-          // COD / Manual Success — Track Purchase, clear cart and redirect
-          const purchasePayload = {
-            value: finalTotal,
-            currency: 'BDT',
-            content_ids: items.map(i => i.productId),
-            content_type: 'product',
-            num_items: items.length,
-            contents: items.map(i => ({ id: i.productId, quantity: i.quantity, item_price: i.price }))
-          };
-          const purchaseUserData = {
-            em: values.email || profile?.email,
-            ph: values.phone,
-            fn: values.fullName.split(' ')[0],
-            ln: values.fullName.split(' ').slice(1).join(' ') || undefined,
-            ct: values.district,
-            st: values.division,
-            country: 'bd'
-          };
-          fbEvent('Purchase', purchasePayload, purchaseUserData);
-          ttEvent('Purchase', purchasePayload, purchaseUserData);
+          // COD / Manual Success — clear cart and redirect to success page
+          // Purchase event will be fired from the success page after fetching order details
           dispatch(clearCart());
           toast.success('Order placed successfully!');
           router.push(`/checkout/success?id=${order._id}`);
