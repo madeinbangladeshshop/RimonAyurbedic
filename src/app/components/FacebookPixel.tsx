@@ -42,7 +42,7 @@ export default function FacebookPixel({
   }, [pathname, searchParams, trackPageView, pixelId, mounted, scriptLoaded]);
 
   // Sanitize pixelId to prevent XSS
-  const sanitizedPixelId = pixelId && /^\d+$/.test(pixelId) ? pixelId : null;
+  const sanitizedPixelId = pixelId && /^\d+$/.test(pixelId.trim()) ? pixelId.trim() : null;
 
   if (!sanitizedPixelId) {
     return null;
