@@ -3,7 +3,7 @@ import { ShippingOrderData, ShippingOrderResponse, ShippingProvider } from '../i
 export class SteadfastProvider implements ShippingProvider {
   private apiKey: string;
   private secretKey: string;
-  private baseUrl = 'https://portal.steadfast.com.bd/api/v1';
+  private baseUrl = 'https://portal.packzy.com/api/v1';
 
   constructor(apiKey: string, secretKey: string) {
     this.apiKey = apiKey;
