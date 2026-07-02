@@ -370,12 +370,18 @@ export default function OrderDetailsDialog({
                             });
                             
                             const data = await res.json();
-                            if (res.ok) {
-                              toast.success(data.message || `${settings?.courierConfig?.activeProvider} booked successfully!`);
-                              onUpdate();
-                              const updateRes = await fetch(`/api/orders/${orderId}`);
-                              if (updateRes.ok) setOrder(await updateRes.json());
-                            } else {
+                             if (res.ok) {
+                               const hasFailures = data.results && data.results.some((r: any) => !r.success);
+                               if (hasFailures) {
+                                 const firstFail = data.results.find((r: any) => !r.success);
+                                 toast.error(`${data.message}. Reason: ${firstFail?.message || 'Unknown error'}`);
+                               } else {
+                                 toast.success(data.message || `${settings?.courierConfig?.activeProvider} booked successfully!`);
+                               }
+                               onUpdate();
+                               const updateRes = await fetch(`/api/orders/${orderId}`);
+                               if (updateRes.ok) setOrder(await updateRes.json());
+                             } else {
                               toast.error(data.message || 'Courier booking failed');
                             }
                           } catch (e) {

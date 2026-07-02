@@ -389,7 +389,13 @@ export default function OrdersPage() {
 
       const data = await res.json();
       if (res.ok) {
-        toast.success(data.message);
+        const hasFailures = data.results && data.results.some((r: any) => !r.success);
+        if (hasFailures) {
+          const firstFail = data.results.find((r: any) => !r.success);
+          toast.error(`${data.message}. Reason: ${firstFail?.message || 'Unknown error'}`);
+        } else {
+          toast.success(data.message);
+        }
         if (ids.length > 1) setSelectedIds([]);
         fetchOrders();
       } else {
