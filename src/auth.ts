@@ -60,7 +60,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         try {
           await connectToDatabase();
           const mongoose = (await import('mongoose')).default;
-          
+
           if (mongoose.Types.ObjectId.isValid(user.id)) {
             const dbUser = await User.findById(user.id);
             if (dbUser) {
@@ -79,21 +79,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (session?.name !== undefined) token.name = session.name;
         if (session?.image !== undefined) token.image = session.image;
       }
-      
+
       if (token.email === 'imranshuvo101@gmail.com') {
         token.role = 'super_admin';
       }
-      
+
       return token;
     },
     async signIn({ user, account }) {
       if (account?.provider === 'google') {
         if (!user.email) return false;
-        
+
         try {
           const savedUser = await User.findOneAndUpdate(
             { email: user.email },
-            { 
+            {
               $set: {
                 name: user.name || 'Unknown',
                 image: user.image || '',

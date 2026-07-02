@@ -43,7 +43,7 @@ export async function PUT(req: NextRequest) {
 
     await connectToDatabase();
     const user = await User.findOne({ _id: session.user.id });
-    
+
     if (!user) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
