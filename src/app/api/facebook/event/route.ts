@@ -2,14 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import GlobalSettings from '@/models/GlobalSettings';
 import { headers } from 'next/headers';
+import crypto from 'crypto';
 
 async function hashData(data: string): Promise<string> {
     if (!data) return '';
-    const encoder = new TextEncoder();
-    const dataBuffer = encoder.encode(data.trim().toLowerCase());
-    const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    try {
+        const hash = crypto.createHash('sha256');
+        hash.update(data.trim().toLowerCase());
+        return hash.digest('hex');
+    } catch (error) {
+        console.error('[FB CAPI] Hashing error:', error);
+        return '';
+    }
 }
 
 export async function POST(request: NextRequest) {
@@ -47,15 +51,15 @@ export async function POST(request: NextRequest) {
         const eventId = body.eventId || crypto.randomUUID();
 
         // Get browser identifiers for best match quality
-        const fbp = request.cookies.get('_fbp')?.value;
-        const fbc = request.cookies.get('_fbc')?.value;
+        const fbp = request.cookies.get('_fbp')?.value || userData.fbp || userData.fbpCookie;
+        const fbc = request.cookies.get('_fbc')?.value || userData.fbc || userData.fbcCookie;
 
         // --- Hashing & Normalization ---
         const hashedEmail = userData.em ? await hashData(userData.em) : undefined;
         
         // Process phone: ensure digits only and has country code (BD: 88)
         let phone = userData.ph ? userData.ph.replace(/\D/g, '') : '';
-        if (phone && !phone.startsWith('88')) {
+        if (phone && !phone.startsWith('88') && phone.length <= 11) {
             phone = '88' + phone;
         }
         const hashedPhone = phone ? await hashData(phone) : undefined;
@@ -74,8 +78,8 @@ export async function POST(request: NextRequest) {
         const fbUserData: any = {
             client_ip_address: ipAddress,
             client_user_agent: userAgent,
-            fbp,
-            fbc,
+            ...(fbp && { fbp }),
+            ...(fbc && { fbc }),
             ...(hashedEmail && { em: [hashedEmail] }),
             ...(hashedPhone && { ph: [hashedPhone] }),
             ...(hashedFirstName && { fn: [hashedFirstName] }),
@@ -100,6 +104,8 @@ export async function POST(request: NextRequest) {
                     },
                 },
             ],
+            // Sending access_token in body is also more reliable
+            access_token: accessToken,
         };
 
         // Add test_event_code if present (useful for testing in Events Manager)
@@ -108,7 +114,7 @@ export async function POST(request: NextRequest) {
         }
 
         const fbResponse = await fetch(
-            `https://graph.facebook.com/v19.0/${pixelId}/events?access_token=${accessToken}`,
+            `https://graph.facebook.com/v19.0/${pixelId}/events`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

@@ -90,6 +90,16 @@ export const fbEvent = (
   // 2. Server-side (CAPI) Tracking
   // Only send CAPI if we are in the browser
   if (typeof window !== "undefined") {
+    // Extract cookies for backup match quality
+    const getCookie = (name: string) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(';').shift();
+      return undefined;
+    };
+    const fbp = getCookie('_fbp');
+    const fbc = getCookie('_fbc');
+
     fetch("/api/facebook/event", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -99,7 +109,11 @@ export const fbEvent = (
         eventUrl: window.location.href,
         userAgent: navigator.userAgent,
         eventId,
-        userData, // Hashing is handled server-side for maximum privacy & accuracy
+        userData: {
+          ...userData,
+          fbp,
+          fbc
+        }, // Hashing is handled server-side for maximum privacy & accuracy
         customData: {
             ...customData,
             // Standardize contents array if present for both Pixel and CAPI compatibility
