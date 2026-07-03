@@ -306,12 +306,20 @@ function CheckoutContent() {
   }, [isHydrated]);
 
   useEffect(() => {
-    // Only redirect if hydration is complete, the grace period (canRedirect) has passed, 
-    // and the cart is still truly empty.
-    if (canRedirect && isHydrated && items.length === 0 && !loading && !submissionSucceededRef.current) {
+    // Only redirect if hydration is complete, the grace period (canRedirect) has passed,
+    // the cart is truly empty, and no success/fail modal is currently showing.
+    if (
+      canRedirect &&
+      isHydrated &&
+      items.length === 0 &&
+      !loading &&
+      !showSuccessModal &&
+      !showFailModal &&
+      !submissionSucceededRef.current
+    ) {
       router.push('/shop');
     }
-  }, [canRedirect, isHydrated, items.length, router, loading]);
+  }, [canRedirect, isHydrated, items.length, router, loading, showSuccessModal, showFailModal]);
 
   const onSubmit = async (values: CheckoutValues) => {
     setLoading(true);
