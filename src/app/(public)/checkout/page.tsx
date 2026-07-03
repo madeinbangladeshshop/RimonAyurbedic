@@ -540,14 +540,15 @@ function CheckoutContent() {
     }
   };
 
-  // Show loading state or nothing while hydrating to prevent flash of "empty cart" redirect
+  // Show loading state while hydrating to prevent flash of "empty cart" redirect
   if (!isHydrated) return (
     <div className="container min-h-[60vh] flex items-center justify-center">
       <Loader2 className="h-8 w-8 animate-spin text-primary" />
     </div>
   );
 
-  if (items.length === 0) return null;
+  // Don't unmount while modals are open (e.g. right after clearCart on order success)
+  if (items.length === 0 && !showSuccessModal && !showFailModal) return null;
 
   return (
     <div className="container px-4 md:px-6 py-12">
