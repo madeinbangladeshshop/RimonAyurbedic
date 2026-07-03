@@ -295,32 +295,6 @@ function CheckoutContent() {
 
   const submissionSucceededRef = useRef(false);
 
-  const [canRedirect, setCanRedirect] = useState(false);
-
-  // Delay the redirect permission to allow Redux state to fully settle
-  useEffect(() => {
-    if (isHydrated) {
-      const timer = setTimeout(() => setCanRedirect(true), 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [isHydrated]);
-
-  useEffect(() => {
-    // Only redirect if hydration is complete, the grace period (canRedirect) has passed,
-    // the cart is truly empty, and no success/fail modal is currently showing.
-    if (
-      canRedirect &&
-      isHydrated &&
-      items.length === 0 &&
-      !loading &&
-      !showSuccessModal &&
-      !showFailModal &&
-      !submissionSucceededRef.current
-    ) {
-      router.push('/shop');
-    }
-  }, [canRedirect, isHydrated, items.length, router, loading, showSuccessModal, showFailModal]);
-
   const onSubmit = async (values: CheckoutValues) => {
     setLoading(true);
     try {
@@ -547,8 +521,26 @@ function CheckoutContent() {
     </div>
   );
 
-  // Don't unmount while modals are open (e.g. right after clearCart on order success)
-  if (items.length === 0 && !showSuccessModal && !showFailModal) return null;
+  // Show empty cart UI instead of redirecting
+  if (items.length === 0 && !showSuccessModal && !showFailModal) return (
+    <div className="container min-h-[70vh] flex flex-col items-center justify-center gap-6 py-20 text-center">
+      <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center">
+        <ShoppingBag className="w-12 h-12 text-muted-foreground" />
+      </div>
+      <div className="space-y-2">
+        <h2 className="text-2xl font-black tracking-tight">আপনার কার্ট খালি!</h2>
+        <p className="text-muted-foreground text-sm max-w-xs">
+          চেকআউট করতে আগে কিছু পণ্য কার্টে যোগ করুন।
+        </p>
+      </div>
+      <Button
+        onClick={() => router.push('/shop')}
+        className="rounded-full px-8 h-11 font-bold"
+      >
+        শপে যান <ArrowRight className="ml-2 h-4 w-4" />
+      </Button>
+    </div>
+  );
 
   return (
     <div className="container px-4 md:px-6 py-12">
