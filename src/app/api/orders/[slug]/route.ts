@@ -65,7 +65,17 @@ export async function PATCH(
     } catch (e) {
       return NextResponse.json({ message: 'Invalid JSON body' }, { status: 400 });
     }
-    const { status, paymentStatus } = body;
+    const {
+      status,
+      paymentStatus,
+      shippingAddress,
+      paymentMethod,
+      transactionId,
+      deliveryCharge,
+      couponDiscountAmount,
+      walletAmountUsed,
+      items
+    } = body;
 
     const conn = await connectToDatabase();
 
@@ -107,6 +117,53 @@ export async function PATCH(
           }, { status: 400 });
         }
         updateData.paymentStatus = paymentStatus;
+      }
+
+      if (shippingAddress) {
+        const currentAddr = order.shippingAddress && typeof (order.shippingAddress as any).toObject === 'function'
+          ? (order.shippingAddress as any).toObject()
+          : (order.shippingAddress || {});
+        updateData.shippingAddress = {
+          fullName: shippingAddress.fullName !== undefined ? shippingAddress.fullName : currentAddr.fullName,
+          phone: shippingAddress.phone !== undefined ? shippingAddress.phone : currentAddr.phone,
+          street: shippingAddress.street !== undefined ? shippingAddress.street : currentAddr.street,
+          city: shippingAddress.city !== undefined ? shippingAddress.city : currentAddr.city,
+          state: shippingAddress.state !== undefined ? shippingAddress.state : currentAddr.state,
+          division: shippingAddress.division !== undefined ? shippingAddress.division : currentAddr.division,
+          zipCode: shippingAddress.zipCode !== undefined ? shippingAddress.zipCode : currentAddr.zipCode,
+          country: shippingAddress.country !== undefined ? shippingAddress.country : currentAddr.country,
+        };
+      }
+
+      if (paymentMethod !== undefined) updateData.paymentMethod = paymentMethod;
+      if (transactionId !== undefined) updateData.transactionId = transactionId;
+      if (couponDiscountAmount !== undefined) updateData.couponDiscountAmount = Number(couponDiscountAmount) || 0;
+      if (walletAmountUsed !== undefined) updateData.walletAmountUsed = Number(walletAmountUsed) || 0;
+
+      if (deliveryCharge !== undefined) {
+        updateData.deliveryCharge = Number(deliveryCharge) || 0;
+      }
+
+      if (items !== undefined && Array.isArray(items)) {
+        updateData.items = items.map((item: any) => ({
+          product: item.product?._id || item.product,
+          name: item.name,
+          price: Number(item.price) || 0,
+          quantity: Number(item.quantity) || 1,
+          color: item.color,
+          size: item.size,
+          image: item.image,
+          purchasePrice: Number(item.purchasePrice) || 0
+        }));
+      }
+
+      // Recalculate totalAmount if items or deliveryCharge are updated
+      if (updateData.items !== undefined || updateData.deliveryCharge !== undefined) {
+        const finalItems = updateData.items !== undefined ? updateData.items : order.items;
+        const finalDeliveryCharge = updateData.deliveryCharge !== undefined ? updateData.deliveryCharge : (order.deliveryCharge || 0);
+        
+        const itemsTotal = finalItems.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+        updateData.totalAmount = itemsTotal + finalDeliveryCharge;
       }
 
       // 1. Handle Sales Counting logic (Atomic-like within transaction)
