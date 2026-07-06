@@ -123,7 +123,7 @@ export default function FooterV1() {
           <div className="flex flex-col items-center text-center md:items-start md:text-left gap-4">
             <Logo textClassName="text-xl md:text-2xl" />
             <p className="text-sm text-muted-foreground w-full md:w-4/5">
-              Your trusted destination for authentic Ayurvedic medicines, organic herbs, and natural wellness products.
+              Your trusted destination for authentic organic products, natural items.
             </p>
 
             {/* PWA Download App Button */}

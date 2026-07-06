@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'About Us | Rimon Ayurbedic',
-  description: 'Rimon Ayurbedic - The trusted name for 100% pure and natural ayurvedic herbal products. Learn about our mission, vision, and values.',
+  description: 'Rimon Ayurbedic - The trusted name for 100% pure and natural organic products. Learn about our mission, vision, and values.',
 };
 
 async function getSettings() {
@@ -48,7 +48,7 @@ export default async function AboutPage() {
             About <span className="text-primary">Us</span>
           </h1>
           <p className="text-muted-foreground text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
-            Rooted in the ancient wisdom of Ayurvedic medicine and the healing power of nature, <strong className="text-primary">{brandName}</strong> offers you complete solutions for a healthy, vibrant, and pure lifestyle. We believe that nature holds the key to true wellness.
+            Rooted in the ancient wisdom of natural traditions and the healing power of nature, <strong className="text-primary">{brandName}</strong> offers you complete solutions for a healthy, vibrant, and pure lifestyle. We believe that nature holds the key to true living.
           </p>
         </div>
       </section>
@@ -86,7 +86,7 @@ export default async function AboutPage() {
                 Connecting Natural Traditions with Modern Science
               </h2>
               <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
-                For centuries, Ayurveda and natural therapy have helped mankind maintain optimal health. We ensure absolute purity and the highest standards during the creation of every herbal and organic product in our lineup.
+                For centuries, botanical traditions and natural therapy have helped mankind maintain optimal health. We ensure absolute purity and the highest standards during the creation of every organic product in our lineup.
               </p>
               <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
                 Our products are sourced from trusted, verified resources and prepared under strict supervision. By avoiding any artificial ingredients, chemical dyes, or preservatives, we ensure our remedies are completely safe and free from side effects.
@@ -99,7 +99,7 @@ export default async function AboutPage() {
                   </div>
                   <div>
                     <h4 className="font-bold text-sm mb-1">Our Mission</h4>
-                    <p className="text-xs text-muted-foreground">To combine ancient Ayurvedic wisdom with modern hygienic practices to offer wellness solutions for healthy living.</p>
+                    <p className="text-xs text-muted-foreground">To combine ancient botanical wisdom with modern hygienic practices to offer natural solutions for healthy living.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
@@ -108,7 +108,7 @@ export default async function AboutPage() {
                   </div>
                   <div>
                     <h4 className="font-bold text-sm mb-1">Our Vision</h4>
-                    <p className="text-xs text-muted-foreground">To build a chemical-free, disease-free, and healthy society by making herbal and organic therapies accessible to all.</p>
+                    <p className="text-xs text-muted-foreground">To build a chemical-free, healthy society by making pure organic items accessible to all.</p>
                   </div>
                 </div>
               </div>
@@ -145,7 +145,7 @@ export default async function AboutPage() {
           <div className="max-w-2xl mx-auto mb-16 space-y-4">
             <h2 className="text-3xl font-bold tracking-tight">Why Choose Us?</h2>
             <p className="text-muted-foreground text-sm">
-              Discover what makes our herbal formulations completely safe, highly effective, and unique.
+              Discover what makes our organic items completely safe, highly effective, and unique.
             </p>
           </div>
 
@@ -230,10 +230,10 @@ export default async function AboutPage() {
       <section className="py-20 text-center relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10 space-y-6">
           <h2 className="text-3xl md:text-5xl font-black tracking-tight max-w-2xl mx-auto leading-tight">
-            Transform Your Wellness Journey with Pure Nature
+            Transform Your Daily Routine with Pure Nature
           </h2>
           <p className="text-muted-foreground max-w-lg mx-auto text-sm">
-            Browse our catalog today and choose the perfect wellness solutions for your daily life.
+            Browse our catalog today and choose the perfect organic items for your daily life.
           </p>
           <div className="flex flex-wrap gap-4 justify-center pt-4">
             <Link href="/shop" passHref>

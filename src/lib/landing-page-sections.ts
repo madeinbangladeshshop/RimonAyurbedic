@@ -42,7 +42,7 @@ export const SECTION_TEMPLATES: SectionTemplate[] = [
     icon: 'layout',
     defaultContent: {
       headline: 'Transform Your Health Naturally',
-      subheadline: 'Discover the power of alternative medicine with our premium products.',
+      subheadline: 'Discover the power of organic products with our premium selection.',
       ctaText: 'Shop Now',
       ctaLink: '#order',
       backgroundImage: '/assets/hero-placeholder.webp',

@@ -36,14 +36,14 @@ const Category = mongoose.models.Category || mongoose.model('Category', Category
 
 const categories = [
   {
-    name: 'Ayurvedic Medicine & Remedies',
-    slug: 'ayurvedic-medicine-remedies',
-    image: '/assets/images/cagetory/Ayurvedic Medicine & Remedies.webp',
+    name: 'Traditional Remedies & Items',
+    slug: 'traditional-remedies-items',
+    image: '/assets/images/cagetory/Traditional Remedies & Items.webp',
     isActive: true,
   },
   {
-    name: 'Herbal Hair & Scalp Care',
-    slug: 'herbal-hair-scalp-care',
+    name: 'Natural Hair & Scalp Care',
+    slug: 'natural-hair-scalp-care',
     image: '/assets/images/cagetory/Herbal Hair & Scalp Care.webp',
     isActive: true,
   },
@@ -54,8 +54,8 @@ const categories = [
     isActive: true,
   },
   {
-    name: 'Wellness & Dietary Supplements',
-    slug: 'wellness-dietary-supplements',
+    name: 'Dietary Supplements',
+    slug: 'dietary-supplements',
     image: '/assets/images/cagetory/Wellness & Dietary Supplements.webp',
     isActive: true,
   },
