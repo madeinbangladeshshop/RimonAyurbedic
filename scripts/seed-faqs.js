@@ -34,20 +34,20 @@ const FAQ = mongoose.models.FAQ || mongoose.model('FAQ', FAQSchema);
 
 const faqs = [
   {
-    question: 'Are your Ayurvedic medicines 100% natural and safe?',
-    answer: 'Yes, all our Ayurvedic products and herbal remedies are sourced from certified manufacturers, prepared using 100% natural ingredients, and free from harmful chemicals. However, we recommend consulting a physician for specific health conditions.',
+    question: 'Are your organic products 100% natural and safe?',
+    answer: 'Yes, all our organic foods, natural personal care, and traditional oils are sourced from certified manufacturers, prepared using 100% natural ingredients, and free from harmful chemicals.',
     order: 1,
     isActive: true,
   },
   {
-    question: 'Do I need a prescription to buy medicines from Rimon Ayurbedic?',
-    answer: 'Most of our natural supplements, general wellness tonics, and herbal products do not require a prescription. However, for specialized classical Ayurvedic formulations, we suggest consulting a registered Ayurvedic practitioner.',
+    question: 'Do I need any special requirements to order from Rimon Ayurbedic?',
+    answer: 'No, you do not need any special requirements or credentials. Anyone can place an order directly from our website and enjoy our premium natural selections.',
     order: 2,
     isActive: true,
   },
   {
-    question: 'How should I store the herbal products and liquid tonics?',
-    answer: 'We recommend storing all Ayurvedic medicines, tablets, and liquid arishtas in a cool, dry place away from direct sunlight. Always keep the container tightly closed after use.',
+    question: 'How should I store the organic items and natural oils?',
+    answer: 'We recommend storing all organic foods, honey, and natural oils in a cool, dry place away from direct sunlight. Always keep the container tightly closed after use.',
     order: 3,
     isActive: true,
   },
@@ -58,8 +58,8 @@ const faqs = [
     isActive: true,
   },
   {
-    question: 'What is your return policy for Ayurvedic medicines?',
-    answer: 'We offer a 7-day easy return policy for all sealed and unused products in their original packaging. For safety and hygiene reasons, opened or used medicines and liquid tonics cannot be returned.',
+    question: 'What is your return policy for products?',
+    answer: 'We offer a 7-day easy return policy for all sealed and unused products in their original packaging. For safety and hygiene reasons, opened or used foods, oils, and skincare items cannot be returned.',
     order: 5,
     isActive: true,
   }

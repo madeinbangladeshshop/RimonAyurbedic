@@ -342,7 +342,7 @@ function CheckoutContent() {
         const order = await response.json();
         submissionSucceededRef.current = true;
 
-        // Track OrderPlaced (Purchase) immediately on API success — jiapixel style
+        // Track Purchase immediately on API success — jiapixel style
         try {
           const safeItems = Array.isArray(order.items) ? order.items : items;
           const fullName = values.fullName || '';
@@ -371,8 +371,8 @@ function CheckoutContent() {
             country: 'bd',
           };
 
-          fbEvent('OrderPlaced', purchaseEventData, purchaseUserData, order._id);
-          ttEvent('OrderPlaced', purchaseEventData, purchaseUserData, order._id);
+          fbEvent('Purchase', purchaseEventData, purchaseUserData, order._id);
+          ttEvent('Purchase', purchaseEventData, purchaseUserData, order._id);
         } catch (trackingError) {
           // Tracking failure should not affect order flow
           console.error('Tracking error:', trackingError);

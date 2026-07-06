@@ -61,26 +61,35 @@ export const fbEvent = (
 ) => {
   const eventId = providedEventId || generateEventId();
 
-  // Map restricted standard events to custom event names to bypass Meta domain-level blocks
-  const EVENT_BYPASS_MAP: Record<string, string> = {
-    'Purchase': 'OrderPlaced',
-    'AddToCart': 'ProductAdded',
-    'InitiateCheckout': 'CheckoutStart'
-  };
-
-  const finalEventName = EVENT_BYPASS_MAP[eventName] || eventName;
+  const finalEventName = eventName;
 
   // 1. Browser Pixel Tracking
-  if (typeof window !== "undefined" && window.fbq) {
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
     const standardEvents = [
-      "AddPaymentInfo", "CompleteRegistration",
-      "Contact", "CustomizeProduct", "Donate", "FindLocation",
-      "Lead", "Schedule",
+      "AddPaymentInfo", "AddToCart", "AddToWishlist", "CompleteRegistration",
+      "Contact", "CustomizeProduct", "Donate", "FindLocation", "InitiateCheckout",
+      "Lead", "Purchase", "Schedule",
       "Search", "StartTrial", "SubmitApplication", "Subscribe", "ViewContent", "PageView"
     ];
 
-    // If it's one of our mapped custom events, or not a standard event, track as Custom
-    if (EVENT_BYPASS_MAP[eventName] || !standardEvents.includes(finalEventName)) {
+    // If user data is provided, use Advanced Matching
+    if (userData && (userData.em || userData.ph)) {
+      // We call 'set' to update user data before tracking the event
+      // This improves matching between Browser and Server events
+      (window as any).fbq('set', 'user_data', {
+        ...(userData.em && { em: userData.em.trim().toLowerCase() }),
+        ...(userData.ph && { ph: userData.ph.replace(/\D/g, '') }),
+        ...(userData.fn && { fn: userData.fn.trim().toLowerCase() }),
+        ...(userData.ln && { ln: userData.ln.trim().toLowerCase() }),
+        ...(userData.ct && { ct: userData.ct.trim().toLowerCase() }),
+        ...(userData.st && { st: userData.st.trim().toLowerCase() }),
+        ...(userData.zp && { zp: userData.zp.trim().toLowerCase() }),
+        ...(userData.country && { country: userData.country.trim().toLowerCase() }),
+      });
+    }
+
+    // If it's not a standard event, track as Custom
+    if (!standardEvents.includes(finalEventName)) {
       window.fbq("trackCustom", finalEventName, customData, { eventID: eventId });
     } else {
       window.fbq("track", finalEventName, customData, { eventID: eventId });
