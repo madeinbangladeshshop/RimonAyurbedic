@@ -108,24 +108,6 @@ export default function ProductCardV6({ product, isFlashSale, priority }: Produc
       image: product.images?.[0]
     }));
 
-    // Track InitiateCheckout
-    const initiateCheckoutPayload = {
-      content_name: product.name,
-      content_category: 'Beauty',
-      content_ids: [product._id],
-      content_type: 'product',
-      value: product.salePrice || product.price,
-      currency: 'BDT',
-      quantity: 1
-    };
-    const trackingUser = {
-      em: session?.user?.email || undefined,
-      ph: (session?.user as any)?.phone || undefined,
-      fn: session?.user?.name || undefined
-    };
-    fbEvent('InitiateCheckout', initiateCheckoutPayload, trackingUser);
-    ttEvent('InitiateCheckout', initiateCheckoutPayload, trackingUser);
-
     router.push('/checkout');
   };
 

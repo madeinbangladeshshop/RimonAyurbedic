@@ -161,8 +161,8 @@ export default function NavbarV2() {
               triggerClassName={!isHomePage || isScrolled ? 'text-foreground hover:text-primary' : 'text-white hover:text-white/70'}
             />
 
-            <Link href="/" className={`text-2xl md:text-3xl font-black tracking-tighter hover:scale-105 transition-all flex items-center gap-2 group ${!isHomePage || isScrolled ? 'text-foreground' : 'text-white'}`}>
-              <Image src="/logo.webp" width={40} height={40} alt="Rimon Ayurbedic Logo" className="object-contain" />
+            <Link href="/" className={`text-2xl md:text-3xl font-black tracking-tighter hover:scale-105 transition-all flex items-center gap-2 md:gap-3 group ${!isHomePage || isScrolled ? 'text-foreground' : 'text-white'}`}>
+              <Image src="/logo.webp" width={56} height={56} alt="Rimon Ayurbedic Logo" className="object-contain w-10 h-10 md:w-14 md:h-14" />
               {settings?.brandName || 'Rimon Ayurbedic'}
             </Link>
           </div>
