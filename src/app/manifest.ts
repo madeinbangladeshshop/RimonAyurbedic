@@ -40,16 +40,16 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     categories: ['shopping', 'business'],
     screenshots: [
       {
-        src: '/assets/screenshot-mobile.png',
-        sizes: '1080x1920',
-        type: 'image/png',
+        src: '/assets/screenshot-mobile.jpg',
+        sizes: '1024x1024',
+        type: 'image/jpeg',
         form_factor: 'narrow',
         label: 'Rimon Ayurbedic Mobile App',
       },
       {
-        src: '/assets/screenshot-desktop.png',
-        sizes: '1920x1080',
-        type: 'image/png',
+        src: '/assets/screenshot-desktop.jpg',
+        sizes: '1024x1024',
+        type: 'image/jpeg',
         form_factor: 'wide',
         label: 'Rimon Ayurbedic Desktop App',
       },
