@@ -194,11 +194,11 @@ export async function generateMetadata(): Promise<Metadata> {
         template: `%s | ${settings.brandName || "Rimon Ayurbedic"}`,
       },
       description: settings.metaDescription || settings.brandName || "Your ultimate destination for quality products.",
-      manifest: '/manifest.json',
+      manifest: '/manifest.webmanifest',
       icons: {
         icon: settings.logoUrl || '/favicon.ico',
         shortcut: settings.logoUrl || '/favicon.ico',
-        apple: settings.logoUrl || '/icon-512x512.png',
+        apple: settings.logoUrl || '/icons/icon-512x512.png',
       },
       appleWebApp: {
         capable: true,

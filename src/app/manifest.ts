@@ -37,16 +37,22 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     theme_color: themeColor,
     icons: [
       {
-        src: settings?.logoUrl || '/icon-512x512.png',
-        sizes: '512x512',
+        src: '/icons/icon-192x192.png',
+        sizes: '192x192',
         type: 'image/png',
-        purpose: 'maskable',
+        purpose: 'any',
       },
       {
-        src: settings?.logoUrl || '/icon-512x512.png',
+        src: '/icons/icon-512x512.png',
         sizes: '512x512',
         type: 'image/png',
         purpose: 'any',
+      },
+      {
+        src: '/icons/icon-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
       },
     ],
   };
