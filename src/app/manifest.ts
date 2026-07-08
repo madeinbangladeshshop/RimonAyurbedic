@@ -35,6 +35,9 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     display: 'standalone',
     background_color: '#ffffff',
     theme_color: themeColor,
+    orientation: 'portrait',
+    id: '/?source=pwa',
+    categories: ['shopping', 'business'],
     icons: [
       {
         src: '/icons/icon-192x192.png',
