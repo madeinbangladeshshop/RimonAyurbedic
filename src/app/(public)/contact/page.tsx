@@ -19,7 +19,7 @@ async function getSettings() {
       return {
         brandName: "Rimon Ayurbedic",
         contact: {
-          email: "support@rimonherbal.com",
+          email: "support@drrimonmia.com",
           phone: "+8801234567890",
           address: "Dhaka, Bangladesh"
         },

@@ -34,7 +34,7 @@ export async function GET() {
       return NextResponse.json({
         brandName: process.env.NEXT_PUBLIC_STORE_NAME || "Rimon Ayurbedic",
         contact: {
-          email: "support@rimonherbal.com",
+          email: "support@drrimonmia.com",
           phone: "+8801234567890",
           address: "Dhaka, Bangladesh"
         },

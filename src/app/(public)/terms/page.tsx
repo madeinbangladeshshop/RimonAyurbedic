@@ -17,7 +17,7 @@ async function getSettings() {
       return {
         brandName: "Rimon Ayurbedic",
         contact: {
-          email: "support@rimonherbal.com",
+          email: "support@drrimonmia.com",
           phone: "+8801234567890"
         }
       };
@@ -28,7 +28,7 @@ async function getSettings() {
     return {
       brandName: "Rimon Ayurbedic",
       contact: {
-        email: "support@rimonherbal.com",
+        email: "support@drrimonmia.com",
         phone: "+8801234567890"
       }
     };
@@ -38,7 +38,7 @@ async function getSettings() {
 export default async function TermsPage() {
   const settings = await getSettings();
   const brandName = settings.brandName || "RPL Market";
-  const contactEmail = settings.contact?.email || "support@rimonherbal.com";
+  const contactEmail = settings.contact?.email || "support@drrimonmia.com";
   const lastUpdated = "April 04, 2026";
 
   return (

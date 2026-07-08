@@ -105,7 +105,7 @@ export default function FooterV4() {
                      </div>
                      <div className="flex items-center gap-4 text-sm font-serif italic text-muted-foreground">
                         <Mail className="h-5 w-5 text-primary shrink-0" />
-                        <span>{settings?.contact?.email || 'concierge@rimonherbal.com'}</span>
+                        <span>{settings?.contact?.email || 'concierge@drrimonmia.com'}</span>
                      </div>
                   </div>
                </div>
