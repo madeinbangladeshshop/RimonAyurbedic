@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.drrimonmia.twa",
+        "sha256_cert_fingerprints": ["F0:50:CC:37:F0:A3:B4:7B:AC:11:E6:09:A2:D2:CB:D2:07:42:A0:ED:72:D4:F1:79:68:D7:4B:AE:EC:8A:1B:97"]
+      }
+    }]
