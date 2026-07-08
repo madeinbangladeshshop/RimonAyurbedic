@@ -38,6 +38,22 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     orientation: 'portrait',
     id: '/?source=pwa',
     categories: ['shopping', 'business'],
+    screenshots: [
+      {
+        src: '/assets/screenshot-mobile.png',
+        sizes: '1080x1920',
+        type: 'image/png',
+        form_factor: 'narrow',
+        label: 'Rimon Ayurbedic Mobile App',
+      },
+      {
+        src: '/assets/screenshot-desktop.png',
+        sizes: '1920x1080',
+        type: 'image/png',
+        form_factor: 'wide',
+        label: 'Rimon Ayurbedic Desktop App',
+      },
+    ],
     icons: [
       {
         src: '/icons/icon-192x192.png',
